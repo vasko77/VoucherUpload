@@ -1,4 +1,4 @@
-export interface IVoucherModel {
+export interface IVoucher {
     id: number;
     refNo: number;
     contractNo: number;

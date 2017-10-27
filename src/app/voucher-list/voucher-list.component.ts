@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { VouchersService } from '../services/vouchers.service';
-import { IVoucherModel } from '../models/voucher.model';
+import { IVoucher } from '../models/voucher.model';
 
 @Component({
   selector: 'app-voucher-list',
@@ -9,12 +9,22 @@ import { IVoucherModel } from '../models/voucher.model';
 })
 export class VoucherListComponent implements OnInit {
 
-  vouchers: IVoucherModel[];
+  vouchers: IVoucher[];
 
   constructor( private voucherService: VouchersService) { }
 
   ngOnInit() {
-    this.vouchers = this.voucherService.getVouchers();
+    this.voucherService.getVouchers()
+    .subscribe((vouchers: IVoucher[]) => {
+      this.vouchers = vouchers;
+      // this.toastr.success( message, 'Success!', { dismiss: 'click' } );
+      console.log(this.vouchers);
+    },
+    (error: any) => {
+      // this.toastr.error( 'Something went wrong', 'Error', { dismiss: 'click' } );
+      console.error(error);
+    }
+    );
   }
 
 }
