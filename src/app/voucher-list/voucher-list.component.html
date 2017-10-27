@@ -1,3 +1,22 @@
-<p>
-  voucher-list works!
-</p>
+<br />
+<div class="container">
+  <kendo-grid [data]="vouchers" [height]="410">
+    <kendo-grid-column field="Actions" width="100">
+      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+        <button (click)="printOriginal(dataItem)" [disabled]="dataItem.statusOriginal != 3">Πρωτότυπο</button> 
+        <button (click)="printCopy(dataItem)" [disabled]="dataItem.statusCopy != 3">Αντίγραφο</button>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="id" title="ID" width="40">
+    </kendo-grid-column>
+    <kendo-grid-column field="refNo" title="Ref No" width="80">
+    </kendo-grid-column>
+    <kendo-grid-column field="contractNo" title="Contract No" width="80">
+    </kendo-grid-column>
+    <kendo-grid-column field="renewalNo" title="Renewal No" width="80">
+    </kendo-grid-column>
+    <kendo-grid-column field="amendmentNo" title="Amendment No" width="80">
+    </kendo-grid-column>
+  </kendo-grid>
+  
+</div>
