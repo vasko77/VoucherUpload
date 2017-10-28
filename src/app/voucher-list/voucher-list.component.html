@@ -1,22 +1,102 @@
 <br />
-<div class="container">
-  <kendo-grid [data]="vouchers" [height]="410">
-    <kendo-grid-column field="Actions" width="100">
-      <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-        <button (click)="printOriginal(dataItem)" [disabled]="dataItem.statusOriginal != 3">Πρωτότυπο</button> 
-        <button (click)="printCopy(dataItem)" [disabled]="dataItem.statusCopy != 3">Αντίγραφο</button>
-      </ng-template>
-    </kendo-grid-column>
-    <kendo-grid-column field="id" title="ID" width="40">
-    </kendo-grid-column>
-    <kendo-grid-column field="refNo" title="Ref No" width="80">
-    </kendo-grid-column>
-    <kendo-grid-column field="contractNo" title="Contract No" width="80">
-    </kendo-grid-column>
-    <kendo-grid-column field="renewalNo" title="Renewal No" width="80">
-    </kendo-grid-column>
-    <kendo-grid-column field="amendmentNo" title="Amendment No" width="80">
-    </kendo-grid-column>
-  </kendo-grid>
+
+<div class="panel panel-primary">
+
+  <div class="panel-heading">
+    <h4>
+      <b>Φίλτρα</b>
+    </h4>
+  </div>
+
+  <div class="panel-body">
+
+    <div class="row">
+
+      <div class="form-group-sm col-sm-6">
+        <label for="contractNo" class="col-sm-4">Αρ. Συμβολαίου</label>
+        <div class="col-sm-6">
+          <input asp-for="ContractNo" type="number" class="form-control" id="contractNo">
+        </div>
+      </div>
+
+      <div class="form-group-sm col-sm-6">
+        <label for="applicationNo" class="col-sm-4">Αρ. Αίτησης</label>
+        <div class="col-sm-6">
+          <input asp-for="ApplicationNo" type="number" class="form-control" id="applicationNo">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="form-group-sm col-sm-6">
+        <label for="renewalNo" class="col-sm-4">Αρ. Ανανέωσης</label>
+        <div class="col-sm-6">
+          <input asp-for="RenewalNo" type="number" class="form-control" id="renewalNo">
+        </div>
+      </div>
+
+      <div class="form-group-sm col-sm-6">
+        <label for="taxNo" class="col-sm-4">Α.Φ.Μ.</label>
+        <div class="col-sm-6">
+          <input asp-for="TaxNo" type="number" class="form-control" id="taxNo">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="form-group-sm col-sm-6">
+        <label for="amendmentNo" class="col-sm-4">Αρ. Πρόσθετης</label>
+        <div class="col-sm-6">
+          <input asp-for="AmendmentNo" type="number" class="form-control" id="amendmentNo">
+        </div>
+      </div>
+
+      <div class="col-sm-2">
+        <button type="submit" class="btn btn-success form-control">Ανανέωση</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="panel panel-primary">
+
+  <div class="panel-heading">
+    <h4>
+      <b>Φίλτρα</b>
+    </h4>
+  </div>
+
+  <div class="panel-body">
+
+    <div class="container">
+      <kendo-grid [data]="vouchers" [height]="410">
+        <kendo-grid-column field="Actions" width="100">
+          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <button (click)="printOriginal(dataItem)" [disabled]="dataItem.statusOriginal != 3">Πρωτότυπο</button>
+            <button (click)="printCopy(dataItem)" [disabled]="dataItem.statusCopy != 3">Αντίγραφο</button>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="id" title="ID" width="40">
+        </kendo-grid-column>
+        <kendo-grid-column field="refNo" title="Ref No" width="80">
+        </kendo-grid-column>
+        <kendo-grid-column field="contractNo" title="Contract No" width="80">
+        </kendo-grid-column>
+        <kendo-grid-column field="renewalNo" title="Renewal No" width="80">
+        </kendo-grid-column>
+        <kendo-grid-column field="amendmentNo" title="Amendment No" width="80">
+        </kendo-grid-column>
+      </kendo-grid>
+
+    </div>
   
+  </div>
+
 </div>
