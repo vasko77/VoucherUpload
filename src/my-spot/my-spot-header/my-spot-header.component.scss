@@ -1,4 +1,15 @@
 :host {
     display: flex;
+    flex-direction: column;
 }
 
+.top-nav {
+    background-color: rgb(197, 48, 44); 
+    height: 28px;
+}
+
+.navbar-inverse {
+    background-color: #033e80;
+    border-color: #02264e;
+    padding-left: 20px;
+}

@@ -76,7 +76,7 @@
   <div class="panel-body">
 
     <div class="container">
-      <kendo-grid [data]="vouchers" [height]="410">
+      <kendo-grid [data]="vouchers" >
         <kendo-grid-column field="Actions" width="100">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
             <button (click)="printOriginal(dataItem)" [disabled]="dataItem.statusOriginal != 3">Πρωτότυπο</button>
