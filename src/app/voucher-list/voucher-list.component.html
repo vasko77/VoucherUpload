@@ -76,7 +76,7 @@
         <kendo-grid-column field="id" width="200" title="Εκτυπώσεις" [locked]="true">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
             <button class="btn btn-sm btn-danger" (click)="printOriginal(dataItem)" [disabled]="dataItem.statusOriginal != 3">Πρωτότυπο</button>
-            <button class="btn btn-sm btn-success" (click)="printCopy(dataItem)" [disabled]="dataItem.statusCopy != 3">Αντίγραφο</button>
+            <button class="btn btn-sm btn-success" (click)="printCopy(dataItem, confirmationDialog)" [disabled]="dataItem.statusCopy != 3">Αντίγραφο</button>
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="contractNo" title="Αρ.Συμβολαίου" width="120"></kendo-grid-column>
@@ -96,3 +96,30 @@
   </div>
 
 </div>
+
+<ng-template #confirmationDialog>
+
+  <div class="form-group-sm">
+    <label class="col-sm-6">Αρ. Συμβολαίου</label>
+    <div class="col-sm-4">
+      <input [ngModel]=" selectedVoucher.contractNo" class="form-control" readonly>
+    </div>
+  </div>
+
+  <div class="form-group-sm">
+    <label class="col-sm-6">Αρ. Ανανέωσης</label>
+    <div class="col-sm-4">
+      <input [ngModel]=" selectedVoucher.renewalNo" class="form-control" readonly>
+    </div>
+  </div>
+
+  <div class="form-group-sm">
+    <label class="col-sm-6">Αρ. Πρόσθετης</label>
+    <div class="col-sm-4">
+      <input [ngModel]=" selectedVoucher.amendmentNo" class="form-control" readonly>
+    </div>
+  </div>
+
+</ng-template>
+
+<div kendoDialogContainer></div>
