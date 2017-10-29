@@ -11,6 +11,17 @@ export interface IVoucher {
     statusOriginal: VoucherStatus;
     statusCopy: VoucherStatus;
     statusNotification: VoucherStatus;
+    lastName: string;
+    firstName: string;
+    taxNo: number;
+    premiums: number;
+    issueDate: Date;
+    startDate: Date;
+    endDate: Date;
+    typeOfPayment: string;
+    applicationNo: number;
+    contractType: string;
+    typeOfPaymentDescr: string;
 }
 
 export enum VoucherStatus {

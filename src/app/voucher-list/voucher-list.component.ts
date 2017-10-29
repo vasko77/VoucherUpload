@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VouchersService } from '../services/vouchers.service';
 import { IVoucher } from '../models/voucher.model';
+import {IntlModule} from '@progress/kendo-angular-intl';
 
 @Component({
   selector: 'app-voucher-list',

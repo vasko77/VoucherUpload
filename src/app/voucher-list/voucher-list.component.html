@@ -72,7 +72,7 @@
   <div class="panel-body">
 
     <div>
-      <kendo-grid [data]="vouchers" [scrollable]="scrollable" style="height: 200px">
+      <kendo-grid [data]="vouchers" style="height: 200px">
         <kendo-grid-column field="id" width="200" title="Εκτυπώσεις" [locked]="true">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
             <button class="btn btn-sm btn-danger" (click)="printOriginal(dataItem)" [disabled]="dataItem.statusOriginal != 3">Πρωτότυπο</button>
@@ -82,7 +82,7 @@
         <kendo-grid-column field="contractNo" title="Αρ.Συμβολαίου" width="120"></kendo-grid-column>
         <kendo-grid-column field="renewalNo" title="Αρ.Ανανέωσης" width="120"></kendo-grid-column>
         <kendo-grid-column field="amendmentNo" title="Αρ.Πρόσθετης" width="120"></kendo-grid-column>
-        <kendo-grid-column field="issueDate" title="Ημ.Έκδοσης" width="120"></kendo-grid-column>
+        <kendo-grid-column field="issueDate" title="Ημ.Έκδοσης" type="date" width="120" [format]="'{0:dd/MM/yyyy}'"></kendo-grid-column>
         <kendo-grid-column field="startDate" title="Ημ.Έναρξης" width="120"></kendo-grid-column>
         <kendo-grid-column field="endDate" title="Ημ.Λήξης" width="120"></kendo-grid-column>
         <kendo-grid-column field="lastName" title="Επώνυμο" width="300"></kendo-grid-column>
