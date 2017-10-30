@@ -1,7 +1,8 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { VouchersService } from '../services/vouchers.service';
 import { IVoucher } from '../models/voucher.model';
-import { IntlModule } from '@progress/kendo-angular-intl';
+// import { IntlModule } from '@progress/kendo-angular-intl';
+// import { formatDate } from '@telerik/kendo-intl';
 
 import { DialogService, DialogRef, DialogCloseResult, DialogAction } from '@progress/kendo-angular-dialog';
 

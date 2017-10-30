@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { IntlModule } from '@progress/kendo-angular-intl';
+import '@progress/kendo-angular-intl/locales/el/all';
 
 import { GridModule } from '@progress/kendo-angular-grid';
 import { DialogModule } from '@progress/kendo-angular-dialog';
@@ -30,7 +32,13 @@ import { VouchersService } from './services/vouchers.service';
     AppRoutingModule,
     MySpotModule
   ],
-  providers: [HttpModule, VouchersService],
+  providers: [
+    HttpModule,
+    VouchersService,
+    {
+      provide: LOCALE_ID, useValue: 'el-GR'
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
