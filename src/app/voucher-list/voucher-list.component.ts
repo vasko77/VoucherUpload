@@ -20,6 +20,7 @@ export class VoucherListComponent implements OnInit {
     private voucherService: VouchersService) { }
 
   ngOnInit() {
+
     this.voucherService.getVouchers()
       .subscribe((vouchers: IVoucher[]) => {
         this.vouchers = vouchers;
@@ -33,8 +34,24 @@ export class VoucherListComponent implements OnInit {
       );
   }
 
-  printOriginal(voucher: IVoucher) {
+  printOriginal(voucher: IVoucher, template: TemplateRef<string>) {
+
     console.log(voucher);
+
+    this.selectedVoucher = voucher;
+
+    const dialog: DialogRef = this.openDialog( 'Παρακαλώ επιβεβαιώστε την Εκτύπωση Πρωτοτύπου', 'Εκτύπωση', template);
+
+    dialog.result.subscribe((result) => {
+      if (result instanceof DialogCloseResult) {
+        console.log('close');
+      } else {
+        if ((result as DialogAction).primary) {
+          console.log('PRINTING');
+        }
+        console.log('action', result);
+      }
+    });
   }
 
   printCopy(voucher: IVoucher, template: TemplateRef<string>) {
@@ -42,28 +59,62 @@ export class VoucherListComponent implements OnInit {
 
     this.selectedVoucher = voucher;
 
-    const dialog: DialogRef = this.dialogService.open({
-      title: 'Παρακαλώ επιβεβαιώστε',
-      content: template,
-      actions: [
-        { text: 'Άκυρο' },
-        { text: 'Εκτύπωση', primary: true }
-      ],
-      width: 450,
-      height: 250,
-      minWidth: 250
-    });
+    const dialog = this.openDialog( 'Παρακαλώ επιβεβαιώστε την Αποποίηση Αντιγράφου', 'Εκτύπωση', template );
 
     dialog.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
         console.log('close');
       } else {
         if ((result as DialogAction).primary) {
-          console.log( 'PRINTING' );
+          console.log('PRINTING');
+
+          this.voucherService.printVoucher( this.selectedVoucher.refNo )
+            .subscribe( ( pdf: string ) => {
+              window.open(pdf);
+            } );
+
         }
         console.log('action', result);
       }
     });
 
   }
+
+  declineOriginal(voucher: IVoucher, template: TemplateRef<string>) {
+    console.log(voucher);
+    this.selectedVoucher = voucher;
+
+    const dialog = this.openDialog( 'Παρακαλώ επιβεβαιώστε την Αποποίηση Πρωτοτύπου', 'Αποποίηση', template );
+
+    dialog.result.subscribe((result) => {
+      if (result instanceof DialogCloseResult) {
+        console.log('close');
+      } else {
+        if ((result as DialogAction).primary) {
+          console.log('PRINTING');
+        }
+        console.log('action', result);
+      }
+    });
+  }
+
+  private openDialog(title: string, buttonText: string, template: TemplateRef<string>): DialogRef {
+
+    const dialog: DialogRef = this.dialogService.open({
+      title: title,
+      content: template,
+      actions: [
+        { text: 'Άκυρο' },
+        { text: buttonText, primary: true }
+      ],
+      width: 550,
+      height: 250,
+      minWidth: 250
+    });
+
+    return dialog;
+  }
 }
+
+
+

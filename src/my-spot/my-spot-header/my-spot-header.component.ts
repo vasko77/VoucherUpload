@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { VouchersService } from '../../app/services/vouchers.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -8,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MySpotHeaderComponent implements OnInit {
 
-  constructor() { }
+  userName: string;
+
+  constructor(private voucherService: VouchersService) { }
 
   ngOnInit() {
+    this.voucherService.getUser()
+      .subscribe((userName: string) => {
+        this.userName = userName;
+      },
+      (error: any) => {
+        // this.toastr.error( 'Something went wrong', 'Error', { dismiss: 'click' } );
+        console.error(error);
+      }
+      );
+
   }
 
 }

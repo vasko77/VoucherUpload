@@ -73,10 +73,11 @@
 
     <div>
       <kendo-grid [data]="vouchers" style="height: 200px">
-        <kendo-grid-column field="id" width="200" title="Εκτυπώσεις" [locked]="true">
+        <kendo-grid-column field="id" width="300" title="Εκτυπώσεις" [locked]="true">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-            <button class="btn btn-sm btn-danger" (click)="printOriginal(dataItem)" [disabled]="dataItem.statusOriginal != 3">Πρωτότυπο</button>
+            <button class="btn btn-sm btn-warning" (click)="printOriginal(dataItem, confirmationDialog)" [disabled]="dataItem.statusOriginal != 3">Πρωτότυπο</button>
             <button class="btn btn-sm btn-success" (click)="printCopy(dataItem, confirmationDialog)" [disabled]="dataItem.statusCopy != 3">Αντίγραφο</button>
+            <button class="btn btn-sm btn-danger" (click)="declineOriginal(dataItem, confirmationDialog)" [disabled]="dataItem.statusOriginal != 3">Αποποίηση</button>
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="contractNo" title="Αρ.Συμβολαίου" width="120"></kendo-grid-column>
