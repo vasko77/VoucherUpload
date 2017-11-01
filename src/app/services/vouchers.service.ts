@@ -15,9 +15,10 @@ export class VouchersService {
 
   constructor(private http: Http) { }
 
-  getVouchers(): Observable<IVoucher[]> {
+  getVouchers( contractNo: number, renewalNo: Number, amendmentNo: Number, applicationNo: Number, taxNo: Number ): Observable<IVoucher[]> {
 
-    const url = this.baseUr + `vouchers`;
+    const url = this.baseUr + `vouchers?contractNo=${contractNo}&renewalNo=${renewalNo}&amendmentNo=${amendmentNo}`
+                            + `&applicationNo=${applicationNo}&taxNo=${taxNo}`;
 
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
@@ -34,7 +35,7 @@ export class VouchersService {
           item.endDate = new Date(item.endDate);
           return item;
         }),
-        total: parseInt(response['@odata.count'], 10)
+        total: response.length
       }))
       .catch((error: any) => {
         const errorMessage = error; // this.logging.logError( error );

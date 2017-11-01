@@ -11,34 +11,16 @@
     <div class="row">
 
       <div class="form-group-sm col-sm-6">
-        <label for="contractNo" class="col-sm-4">Αρ. Συμβολαίου</label>
+        <label class="col-sm-4">Αρ. Συμβολαίου</label>
         <div class="col-sm-6">
-          <input asp-for="ContractNo" type="number" class="form-control" id="contractNo">
+          <input [(ngModel)]="contractNo" type="number" class="form-control" >
         </div>
       </div>
 
       <div class="form-group-sm col-sm-6">
-        <label for="applicationNo" class="col-sm-4">Αρ. Αίτησης</label>
+        <label class="col-sm-4">Αρ. Αίτησης</label>
         <div class="col-sm-6">
-          <input asp-for="ApplicationNo" type="number" class="form-control" id="applicationNo">
-        </div>
-      </div>
-
-    </div>
-
-    <div class="row">
-
-      <div class="form-group-sm col-sm-6">
-        <label for="renewalNo" class="col-sm-4">Αρ. Ανανέωσης</label>
-        <div class="col-sm-6">
-          <input asp-for="RenewalNo" type="number" class="form-control" id="renewalNo">
-        </div>
-      </div>
-
-      <div class="form-group-sm col-sm-6">
-        <label for="taxNo" class="col-sm-4">Α.Φ.Μ.</label>
-        <div class="col-sm-6">
-          <input asp-for="TaxNo" type="number" class="form-control" id="taxNo">
+          <input [(ngModel)]="applicationNo" type="number" class="form-control" >
         </div>
       </div>
 
@@ -47,14 +29,32 @@
     <div class="row">
 
       <div class="form-group-sm col-sm-6">
-        <label for="amendmentNo" class="col-sm-4">Αρ. Πρόσθετης</label>
+        <label class="col-sm-4">Αρ. Ανανέωσης</label>
         <div class="col-sm-6">
-          <input asp-for="AmendmentNo" type="number" class="form-control" id="amendmentNo">
+          <input [(ngModel)]="renewalNo" type="number" class="form-control" >
+        </div>
+      </div>
+
+      <div class="form-group-sm col-sm-6">
+        <label class="col-sm-4">Α.Φ.Μ.</label>
+        <div class="col-sm-6">
+          <input [(ngModel)]="taxNo" type="number" class="form-control" >
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="form-group-sm col-sm-6">
+        <label class="col-sm-4">Αρ. Πρόσθετης</label>
+        <div class="col-sm-6">
+          <input [(ngModel)]="amendmentNo" type="number" class="form-control" >
         </div>
       </div>
 
       <div class="col-sm-2">
-        <button type="submit" class="btn btn-success form-control">Ανανέωση</button>
+        <button type="button" (click)="getVouchers()" class="btn btn-success form-control">Ανανέωση</button>
       </div>
 
     </div>
@@ -75,9 +75,12 @@
       <kendo-grid [data]="vouchers" style="height: 200px">
         <kendo-grid-column field="id" width="300" title="Εκτυπώσεις" [locked]="true">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-            <button class="btn btn-sm btn-warning" (click)="printOriginal(dataItem, confirmationDialog)" [disabled]="dataItem.statusOriginal != 3">Πρωτότυπο</button>
-            <button class="btn btn-sm btn-success" (click)="printCopy(dataItem, confirmationDialog)" [disabled]="dataItem.statusCopy != 3">Αντίγραφο</button>
-            <button class="btn btn-sm btn-danger" (click)="declineOriginal(dataItem, confirmationDialog)" [disabled]="dataItem.statusOriginal != 3">Αποποίηση</button>
+            <button class="btn btn-sm btn-warning" (click)="printOriginal(dataItem, confirmationDialog)" 
+                    [disabled]="dataItem.statusOriginal != 3 && dataItem.statusOriginal != 5">Πρωτότυπο</button>
+            <button class="btn btn-sm btn-success" (click)="printCopy(dataItem, confirmationDialog)" 
+                    [disabled]="dataItem.statusCopy != 3 && dataItem.statusCopy != 5">Αντίγραφο</button>
+            <button class="btn btn-sm btn-danger" (click)="declineOriginal(dataItem, confirmationDialog)" 
+                    [disabled]="dataItem.statusOriginal != 3 && dataItem.statusOriginal != 5">Αποποίηση</button>
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="contractNo" title="Αρ.Συμβολαίου" width="120"></kendo-grid-column>

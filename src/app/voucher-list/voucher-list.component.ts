@@ -1,8 +1,7 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { VouchersService } from '../services/vouchers.service';
 import { IVoucher } from '../models/voucher.model';
-// import { IntlModule } from '@progress/kendo-angular-intl';
-// import { formatDate } from '@telerik/kendo-intl';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 import { DialogService, DialogRef, DialogCloseResult, DialogAction } from '@progress/kendo-angular-dialog';
 
@@ -13,26 +12,36 @@ import { DialogService, DialogRef, DialogCloseResult, DialogAction } from '@prog
 })
 export class VoucherListComponent implements OnInit {
 
+  contractNo: number;
+  renewalNo: Number;
+  amendmentNo: Number;
+  applicationNo: Number;
+  taxNo: Number;
+
   vouchers: IVoucher[];
   selectedVoucher: IVoucher;
 
   constructor(private dialogService: DialogService,
-    private voucherService: VouchersService) { }
+    private voucherService: VouchersService,
+    public toastr: ToastsManager, vcr: ViewContainerRef) {
+      this.toastr.setRootViewContainerRef(vcr);
+     }
 
   ngOnInit() {
-
-    this.voucherService.getVouchers()
-      .subscribe((vouchers: IVoucher[]) => {
-        this.vouchers = vouchers;
-        // this.toastr.success( message, 'Success!', { dismiss: 'click' } );
-        console.log(this.vouchers);
-      },
-      (error: any) => {
-        // this.toastr.error( 'Something went wrong', 'Error', { dismiss: 'click' } );
-        console.error(error);
-      }
-      );
+    this.getVouchers();
   }
+
+  getVouchers() {
+    this.voucherService.getVouchers(this.contractNo, this.renewalNo, this.amendmentNo, this.applicationNo, this.taxNo )
+    .subscribe((vouchers: IVoucher[]) => {
+      this.vouchers = vouchers;
+      console.log(this.vouchers);
+    },
+    (error: any) => {
+      this.toastr.error( 'Πρόβλημα ανάκτησης δεδομένων', 'Σφάλμα' );
+      console.error(error);
+    }
+    );  }
 
   printOriginal(voucher: IVoucher, template: TemplateRef<string>) {
 
