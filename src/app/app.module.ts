@@ -18,6 +18,7 @@ import { VoucherListComponent } from './voucher-list/voucher-list.component';
 import { VouchersService } from './services/vouchers.service';
 import { ToastCustomOptions } from './config/ToastCustomOptions';
 import { ToastOptions } from 'ng2-toastr/src/toast-options';
+import { BusyModule } from 'angular2-busy';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { ToastOptions } from 'ng2-toastr/src/toast-options';
     HttpModule,
     FormsModule,
     ToastModule.forRoot(),
+    BusyModule,
     GridModule,
     DialogModule,
     AppRoutingModule,

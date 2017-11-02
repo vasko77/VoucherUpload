@@ -4,6 +4,7 @@ import { IVoucher } from '../models/voucher.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 import { DialogService, DialogRef, DialogCloseResult, DialogAction } from '@progress/kendo-angular-dialog';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-voucher-list',
@@ -11,6 +12,8 @@ import { DialogService, DialogRef, DialogCloseResult, DialogAction } from '@prog
   styleUrls: ['./voucher-list.component.scss']
 })
 export class VoucherListComponent implements OnInit {
+
+  busy: Subscription;
 
   contractNo: number;
   renewalNo: Number;
@@ -32,7 +35,7 @@ export class VoucherListComponent implements OnInit {
   }
 
   getVouchers() {
-    this.voucherService.getVouchers(this.contractNo, this.renewalNo, this.amendmentNo, this.applicationNo, this.taxNo )
+    this.busy = this.voucherService.getVouchers(this.contractNo, this.renewalNo, this.amendmentNo, this.applicationNo, this.taxNo )
     .subscribe((vouchers: IVoucher[]) => {
       this.vouchers = vouchers;
       console.log(this.vouchers);

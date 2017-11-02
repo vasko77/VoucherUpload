@@ -7,11 +7,12 @@ import 'rxjs/add/observable/throw';
 
 import { IVoucher, VoucherStatus, VoucherType } from '../models/voucher.model';
 import { GridDataResult } from '@progress/kendo-angular-grid';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class VouchersService {
 
-  private baseUr = 'http://localhost:37624/';
+  private baseUr = environment.vouchersBaseUrl;
 
   constructor(private http: Http) { }
 
@@ -19,6 +20,8 @@ export class VouchersService {
 
     const url = this.baseUr + `vouchers?contractNo=${contractNo}&renewalNo=${renewalNo}&amendmentNo=${amendmentNo}`
                             + `&applicationNo=${applicationNo}&taxNo=${taxNo}`;
+
+    console.log( `service url: ${url}`);
 
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers, withCredentials: true });
