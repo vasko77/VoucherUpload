@@ -64,17 +64,14 @@ export class VoucherListComponent implements OnInit {
           console.log('PRINTING');
 
           this.voucherService.printVoucher( this.selectedVoucher, VoucherDocumentType.Original )
-          .subscribe(
-          ( pdfBytes: Uint8Array ) => {
-            this.pdfBytes = pdfBytes;
-            console.log( 'RESPONSE: ' + pdfBytes );
+          .subscribe( ( pdfBytes: Blob ) => {
+            const fileURL = URL.createObjectURL(pdfBytes);
+            window.open(fileURL);
           },
           (error: any) => {
-            this.toastr.error( '********', 'Σφάλμα' );
+            this.toastr.error( 'Αδύνατη εκτύπωση Πρωτότυπου', 'Σφάλμα' );
             console.error(error);
           } );
-
-          window.open('http://eh017ins101/MotorContractGUI/Printouts/5378/RunIdVouchers_5378.pdf', '_blank');
 
       }
         console.log('action', result);
@@ -97,17 +94,14 @@ export class VoucherListComponent implements OnInit {
           console.log('PRINTING');
 
           this.voucherService.printVoucher( this.selectedVoucher, VoucherDocumentType.Copy )
-            .subscribe(
-            ( pdfBytes: Uint8Array ) => {
-              this.pdfBytes = pdfBytes;
-              console.log( 'RESPONSE: ' + pdfBytes );
-            },
-            (error: any) => {
-              this.toastr.error( '********', 'Σφάλμα' );
-              console.error(error);
-            } );
-
-            window.open('http://eh017ins101/MotorContractGUI/Printouts/5378/RunIdVouchers_5378.pdf', '_blank');
+          .subscribe( ( pdfBytes: Blob ) => {
+            const fileURL = URL.createObjectURL(pdfBytes);
+            window.open(fileURL);
+          },
+          (error: any) => {
+            this.toastr.error( 'Αδύνατη εκτύπωση Αντιγράφου', 'Σφάλμα' );
+            console.error(error);
+          } );
 
         }
         console.log('action', result);
@@ -131,16 +125,14 @@ export class VoucherListComponent implements OnInit {
           console.log('PRINTING');
 
           this.voucherService.printVoucher( this.selectedVoucher, VoucherDocumentType.Notification )
-          .subscribe(
-            ( response: any ) => {
-            console.log( 'RESPONSE: ' + response );
+          .subscribe( ( pdfBytes: Blob ) => {
+            const fileURL = URL.createObjectURL(pdfBytes);
+            window.open(fileURL);
           },
           (error: any) => {
-            this.toastr.error( '********', 'Σφάλμα' );
+            this.toastr.error( 'Αδύνατη εκτύπωση Ειδοποιητηρίου', 'Σφάλμα' );
             console.error(error);
           } );
-
-          window.open('http://eh017ins101/MotorContractGUI/Printouts/5378/RunIdVouchers_5378.pdf', '_blank');
 
         }
         console.log('action', result);
@@ -161,6 +153,15 @@ export class VoucherListComponent implements OnInit {
       } else {
         if ((result as DialogAction).primary) {
           console.log('PRINTING');
+
+          this.voucherService.declineVoucher( this.selectedVoucher )
+          .subscribe( ( value: any ) => {
+          },
+          (error: any) => {
+            this.toastr.error( 'Αδύνατη Αποποίηση', 'Σφάλμα' );
+            console.error(error);
+          } );
+
         }
         console.log('action', result);
       }
@@ -174,7 +175,7 @@ export class VoucherListComponent implements OnInit {
         window.open(fileURL);
       },
       (error: any) => {
-        this.toastr.error( '********', 'Σφάλμα' );
+        this.toastr.error( '**************', 'Σφάλμα' );
         console.error(error);
       } );
   }

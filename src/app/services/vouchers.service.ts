@@ -43,7 +43,7 @@ export class VouchersService {
       });
   }
 
-  printVoucher(voucher: IVoucher, documentType: VoucherDocumentType): Observable<Uint8Array> {
+  printVoucher(voucher: IVoucher, documentType: VoucherDocumentType): Observable<Blob> {
 
     let url = environment.vouchersBaseUrl + `vouchers/${voucher.id}/print`;
 
@@ -58,6 +58,21 @@ export class VouchersService {
     return this.http.post(url, undefined, { withCredentials: true })
       .map((response: Response) => response.arrayBuffer())
       .map((arrayBuffer: ArrayBuffer) => new Uint8Array(arrayBuffer))
+      .catch((error: any) => {
+        const errorMessage = error; // this.logging.logError( error );
+        return Observable.throw(errorMessage);
+      });
+
+  }
+
+  declineVoucher(voucher: IVoucher): Observable<Response> {
+
+    const url = environment.vouchersBaseUrl + `vouchers/${voucher.id}/decline`;
+
+    console.log(`Print Voucher Update URL: ${url}`);
+
+    return this.http.post(url, undefined, { withCredentials: true })
+      .map( ( response: Response ) => response as Response )
       .catch((error: any) => {
         const errorMessage = error; // this.logging.logError( error );
         return Observable.throw(errorMessage);
@@ -83,9 +98,9 @@ export class VouchersService {
 
     const url = environment.vouchersBaseUrl + `vouchers/${77}/printcopy`;
 
-    return this.http.post(url, undefined, { withCredentials: true, responseType: ResponseContentType.ArrayBuffer } )
+    return this.http.post(url, undefined, { withCredentials: true, responseType: ResponseContentType.ArrayBuffer })
       .map((res: Response) => {
-        console.log( res );
+        console.log(res);
         return new Blob([res.blob()], { type: 'application/pdf' });
       })
       .catch((error: any) => {
