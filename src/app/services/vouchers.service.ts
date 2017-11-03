@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { IVoucher, VoucherStatus, VoucherType } from '../models/voucher.model';
+import { IVoucher, VoucherStatus, VoucherType, VoucherDocumentType } from '../models/voucher.model';
 import { GridDataResult } from '@progress/kendo-angular-grid';
 import { environment } from '../../environments/environment';
 
@@ -23,10 +23,7 @@ export class VouchersService {
 
     console.log( `service url: ${url}`);
 
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers, withCredentials: true });
-
-    return this.http.get(url, options)
+    return this.http.get(url, {withCredentials: true} )
       .map((response: Response) => {
         const vouchers = response.json() as IVoucher[];
         return vouchers;
@@ -46,18 +43,30 @@ export class VouchersService {
       });
   }
 
-  printVoucher(refno: number): Observable<string> {
+  printVoucher( voucher: IVoucher, documentType: VoucherDocumentType ): Observable<Response> {
 
-    return Observable.of( 'http://eh017ins101/MotorContractGUI/Printouts/5378/RunIdVouchers_5378.pdf' );
+    let url = environment.vouchersBaseUrl + `vouchers/${voucher.id}/print`;
+
+    switch (documentType) {
+      case VoucherDocumentType.Original: url += 'original'; break;
+      case VoucherDocumentType.Copy: url += 'copy'; break;
+      case VoucherDocumentType.Notification: url += 'notification'; break;
+    }
+
+    console.log( `Print Voucher Update URL: ${url}` );
+
+    return this.http.post( url, undefined, { withCredentials: true } )
+      .catch((error: any) => {
+        const errorMessage = error; // this.logging.logError( error );
+        return Observable.throw(errorMessage);
+      });
+
   }
 
   getUser(): Observable<string> {
     const url = this.baseUr + 'user';
 
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers, withCredentials: true });
-
-    return this.http.get(url, options)
+    return this.http.get(url, {withCredentials: true})
       .map((response: Response) => {
         const userName = response.text();
         return userName;

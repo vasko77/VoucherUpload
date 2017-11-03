@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { VouchersService } from '../services/vouchers.service';
-import { IVoucher } from '../models/voucher.model';
+import { IVoucher, VoucherDocumentType } from '../models/voucher.model';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 import { DialogService, DialogRef, DialogCloseResult, DialogAction } from '@progress/kendo-angular-dialog';
@@ -23,6 +23,8 @@ export class VoucherListComponent implements OnInit {
 
   vouchers: IVoucher[];
   selectedVoucher: IVoucher;
+  pdfUrl: string;
+  pdfBytes: Uint8Array;
 
   constructor(private dialogService: DialogService,
     private voucherService: VouchersService,
@@ -71,7 +73,7 @@ export class VoucherListComponent implements OnInit {
 
     this.selectedVoucher = voucher;
 
-    const dialog = this.openDialog( 'Παρακαλώ επιβεβαιώστε την Αποποίηση Αντιγράφου', 'Εκτύπωση', template );
+    const dialog = this.openDialog( 'Παρακαλώ επιβεβαιώστε την Εκτύπωση Αντιγράφου', 'Εκτύπωση', template );
 
     dialog.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
@@ -80,10 +82,50 @@ export class VoucherListComponent implements OnInit {
         if ((result as DialogAction).primary) {
           console.log('PRINTING');
 
-          this.voucherService.printVoucher( this.selectedVoucher.refNo )
-            .subscribe( ( pdf: string ) => {
-              window.open(pdf);
+          this.voucherService.printVoucher( this.selectedVoucher, VoucherDocumentType.Copy )
+            .subscribe(
+              ( response: any ) => {
+              console.log( 'RESPONSE: ' + response );
+            },
+            (error: any) => {
+              this.toastr.error( '********', 'Σφάλμα' );
+              console.error(error);
             } );
+
+            window.open('http://eh017ins101/MotorContractGUI/Printouts/5378/RunIdVouchers_5378.pdf', '_blank');
+
+        }
+        console.log('action', result);
+      }
+    });
+
+  }
+
+  printNotification(voucher: IVoucher, template: TemplateRef<string>) {
+    console.log(voucher);
+
+    this.selectedVoucher = voucher;
+
+    const dialog = this.openDialog( 'Παρακαλώ επιβεβαιώστε την Εκτύπωση Ειδοποιητηρίου', 'Εκτύπωση', template );
+
+    dialog.result.subscribe((result) => {
+      if (result instanceof DialogCloseResult) {
+        console.log('close');
+      } else {
+        if ((result as DialogAction).primary) {
+          console.log('PRINTING');
+
+          this.voucherService.printVoucher( this.selectedVoucher, VoucherDocumentType.Notification )
+          .subscribe(
+            ( response: any ) => {
+            console.log( 'RESPONSE: ' + response );
+          },
+          (error: any) => {
+            this.toastr.error( '********', 'Σφάλμα' );
+            console.error(error);
+          } );
+
+          window.open('http://eh017ins101/MotorContractGUI/Printouts/5378/RunIdVouchers_5378.pdf', '_blank');
 
         }
         console.log('action', result);

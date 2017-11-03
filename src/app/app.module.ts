@@ -9,6 +9,8 @@ import '@progress/kendo-angular-intl/locales/el/all';
 
 import { GridModule } from '@progress/kendo-angular-grid';
 import { DialogModule } from '@progress/kendo-angular-dialog';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 import { MySpotModule } from '../my-spot/my-spot.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -24,7 +26,8 @@ import { BusyModule } from 'angular2-busy';
 @NgModule({
   declarations: [
     AppComponent,
-    VoucherListComponent
+    VoucherListComponent,
+    PdfViewerComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +37,7 @@ import { BusyModule } from 'angular2-busy';
     ToastModule.forRoot(),
     BusyModule,
     GridModule,
+    PDFExportModule,
     DialogModule,
     AppRoutingModule,
     MySpotModule

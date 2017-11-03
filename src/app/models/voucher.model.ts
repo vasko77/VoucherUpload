@@ -39,3 +39,9 @@ export enum VoucherType {
     Amendment,
     Installment
 }
+
+export enum VoucherDocumentType {
+    Original,
+    Copy,
+    Notification
+}

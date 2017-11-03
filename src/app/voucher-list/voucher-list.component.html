@@ -76,11 +76,16 @@
         <kendo-grid-column field="id" width="300" title="Εκτυπώσεις" [locked]="true">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
             <button class="btn btn-sm btn-warning" (click)="printOriginal(dataItem, confirmationDialog)" 
-                    [disabled]="dataItem.statusOriginal != 3 && dataItem.statusOriginal != 5">Πρωτότυπο</button>
+                    *ngIf="dataItem.agentType === 0"
+                    [disabled]="dataItem.statusOriginal !== 3 && dataItem.statusOriginal !== 5">Πρωτότυπο</button>
+            <button class="btn btn-sm btn-primary" (click)="printNotification(dataItem, confirmationDialog)" 
+                    *ngIf="dataItem.agentType === 1"
+                    [disabled]="dataItem.statusNotification !== 3 && dataItem.statusNotification !== 5">Ειδοποιητήριο</button>
             <button class="btn btn-sm btn-success" (click)="printCopy(dataItem, confirmationDialog)" 
-                    [disabled]="dataItem.statusCopy != 3 && dataItem.statusCopy != 5">Αντίγραφο</button>
+                    [disabled]="dataItem.statusCopy !== 3 && dataItem.statusCopy !== 5">Αντίγραφο</button>
             <button class="btn btn-sm btn-danger" (click)="declineOriginal(dataItem, confirmationDialog)" 
-                    [disabled]="dataItem.statusOriginal != 3 && dataItem.statusOriginal != 5">Αποποίηση</button>
+                    *ngIf="dataItem.agentType === 0"
+                    [disabled]="dataItem.statusOriginal !== 3 && dataItem.statusOriginal !== 5">Αποποίηση</button>
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="contractNo" title="Αρ.Συμβολαίου" width="120"></kendo-grid-column>
@@ -127,3 +132,9 @@
 </ng-template>
 
 <div kendoDialogContainer></div>
+
+<!--kendo-pdf-export #pdf paperSize="A4" margin="2cm">
+  <my-invoice [data]="pdfBytes"></my-invoice>
+</kendo-pdf-export-->
+
+<pdf-viewer [src]="pdfSrc" [render-text]="true" style="display: block;"></pdf-viewer>
