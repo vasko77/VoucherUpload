@@ -45,8 +45,8 @@ export class VoucherListComponent implements OnInit {
     (error: any) => {
       this.toastr.error( 'Πρόβλημα ανάκτησης δεδομένων', 'Σφάλμα' );
       console.error(error);
-    }
-    );  }
+    });
+  }
 
   printOriginal(voucher: IVoucher, template: TemplateRef<string>) {
 
@@ -62,7 +62,21 @@ export class VoucherListComponent implements OnInit {
       } else {
         if ((result as DialogAction).primary) {
           console.log('PRINTING');
-        }
+
+          this.voucherService.printVoucher( this.selectedVoucher, VoucherDocumentType.Original )
+          .subscribe(
+          ( pdfBytes: Uint8Array ) => {
+            this.pdfBytes = pdfBytes;
+            console.log( 'RESPONSE: ' + pdfBytes );
+          },
+          (error: any) => {
+            this.toastr.error( '********', 'Σφάλμα' );
+            console.error(error);
+          } );
+
+          window.open('http://eh017ins101/MotorContractGUI/Printouts/5378/RunIdVouchers_5378.pdf', '_blank');
+
+      }
         console.log('action', result);
       }
     });
@@ -84,8 +98,9 @@ export class VoucherListComponent implements OnInit {
 
           this.voucherService.printVoucher( this.selectedVoucher, VoucherDocumentType.Copy )
             .subscribe(
-              ( response: any ) => {
-              console.log( 'RESPONSE: ' + response );
+            ( pdfBytes: Uint8Array ) => {
+              this.pdfBytes = pdfBytes;
+              console.log( 'RESPONSE: ' + pdfBytes );
             },
             (error: any) => {
               this.toastr.error( '********', 'Σφάλμα' );
@@ -150,6 +165,18 @@ export class VoucherListComponent implements OnInit {
         console.log('action', result);
       }
     });
+  }
+
+  printTest() {
+    this.voucherService.printVoucherTest()
+      .subscribe( ( pdfBytes: Blob ) => {
+        const fileURL = URL.createObjectURL(pdfBytes);
+        window.open(fileURL);
+      },
+      (error: any) => {
+        this.toastr.error( '********', 'Σφάλμα' );
+        console.error(error);
+      } );
   }
 
   private openDialog(title: string, buttonText: string, template: TemplateRef<string>): DialogRef {

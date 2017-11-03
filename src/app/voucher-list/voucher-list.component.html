@@ -63,6 +63,8 @@
 
 </div>
 
+<button class="btn btn-sm btn-danger" (click)="printTest()">Ειδοποιητήριο</button>
+
 <div class="panel panel-primary">
 
   <div class="panel-heading">
@@ -137,4 +139,3 @@
   <my-invoice [data]="pdfBytes"></my-invoice>
 </kendo-pdf-export-->
 
-<pdf-viewer [src]="pdfSrc" [render-text]="true" style="display: block;"></pdf-viewer>

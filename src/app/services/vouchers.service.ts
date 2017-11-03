@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Http, Response, Headers, RequestOptions, ResponseContentType } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -16,14 +16,14 @@ export class VouchersService {
 
   constructor(private http: Http) { }
 
-  getVouchers( contractNo: number, renewalNo: Number, amendmentNo: Number, applicationNo: Number, taxNo: Number ): Observable<IVoucher[]> {
+  getVouchers(contractNo: number, renewalNo: Number, amendmentNo: Number, applicationNo: Number, taxNo: Number): Observable<IVoucher[]> {
 
     const url = this.baseUr + `vouchers?contractNo=${contractNo}&renewalNo=${renewalNo}&amendmentNo=${amendmentNo}`
-                            + `&applicationNo=${applicationNo}&taxNo=${taxNo}`;
+      + `&applicationNo=${applicationNo}&taxNo=${taxNo}`;
 
-    console.log( `service url: ${url}`);
+    console.log(`service url: ${url}`);
 
-    return this.http.get(url, {withCredentials: true} )
+    return this.http.get(url, { withCredentials: true })
       .map((response: Response) => {
         const vouchers = response.json() as IVoucher[];
         return vouchers;
@@ -43,7 +43,7 @@ export class VouchersService {
       });
   }
 
-  printVoucher( voucher: IVoucher, documentType: VoucherDocumentType ): Observable<Response> {
+  printVoucher(voucher: IVoucher, documentType: VoucherDocumentType): Observable<Uint8Array> {
 
     let url = environment.vouchersBaseUrl + `vouchers/${voucher.id}/print`;
 
@@ -53,9 +53,11 @@ export class VouchersService {
       case VoucherDocumentType.Notification: url += 'notification'; break;
     }
 
-    console.log( `Print Voucher Update URL: ${url}` );
+    console.log(`Print Voucher Update URL: ${url}`);
 
-    return this.http.post( url, undefined, { withCredentials: true } )
+    return this.http.post(url, undefined, { withCredentials: true })
+      .map((response: Response) => response.arrayBuffer())
+      .map((arrayBuffer: ArrayBuffer) => new Uint8Array(arrayBuffer))
       .catch((error: any) => {
         const errorMessage = error; // this.logging.logError( error );
         return Observable.throw(errorMessage);
@@ -66,7 +68,7 @@ export class VouchersService {
   getUser(): Observable<string> {
     const url = this.baseUr + 'user';
 
-    return this.http.get(url, {withCredentials: true})
+    return this.http.get(url, { withCredentials: true })
       .map((response: Response) => {
         const userName = response.text();
         return userName;
@@ -77,4 +79,19 @@ export class VouchersService {
       });
   }
 
+  printVoucherTest(): Observable<Blob> {
+
+    const url = environment.vouchersBaseUrl + `vouchers/${77}/printcopy`;
+
+    return this.http.post(url, undefined, { withCredentials: true, responseType: ResponseContentType.ArrayBuffer } )
+      .map((res: Response) => {
+        console.log( res );
+        return new Blob([res.blob()], { type: 'application/pdf' });
+      })
+      .catch((error: any) => {
+        const errorMessage = error; // this.logging.logError( error );
+        return Observable.throw(errorMessage);
+      });
+
+  }
 }
