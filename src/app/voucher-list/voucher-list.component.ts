@@ -29,23 +29,23 @@ export class VoucherListComponent implements OnInit {
   constructor(private dialogService: DialogService,
     private voucherService: VouchersService,
     public toastr: ToastsManager, vcr: ViewContainerRef) {
-      this.toastr.setRootViewContainerRef(vcr);
-     }
+    this.toastr.setRootViewContainerRef(vcr);
+  }
 
   ngOnInit() {
     this.getVouchers();
   }
 
   getVouchers() {
-    this.busy = this.voucherService.getVouchers(this.contractNo, this.renewalNo, this.amendmentNo, this.applicationNo, this.taxNo )
-    .subscribe((vouchers: IVoucher[]) => {
-      this.vouchers = vouchers;
-      console.log(this.vouchers);
-    },
-    (error: any) => {
-      this.toastr.error( 'Πρόβλημα ανάκτησης δεδομένων', 'Σφάλμα' );
-      console.error(error);
-    });
+    this.busy = this.voucherService.getVouchers(this.contractNo, this.renewalNo, this.amendmentNo, this.applicationNo, this.taxNo)
+      .subscribe((vouchers: IVoucher[]) => {
+        this.vouchers = vouchers;
+        console.log(this.vouchers);
+      },
+      (error: any) => {
+        this.toastr.error('Πρόβλημα ανάκτησης δεδομένων', 'Σφάλμα');
+        console.error(error);
+      });
   }
 
   printOriginal(voucher: IVoucher, template: TemplateRef<string>) {
@@ -54,7 +54,7 @@ export class VoucherListComponent implements OnInit {
 
     this.selectedVoucher = voucher;
 
-    const dialog: DialogRef = this.openDialog( 'Παρακαλώ επιβεβαιώστε την Εκτύπωση Πρωτοτύπου', 'Εκτύπωση', template);
+    const dialog: DialogRef = this.openDialog('Παρακαλώ επιβεβαιώστε την Εκτύπωση Πρωτοτύπου', 'Εκτύπωση', template);
 
     dialog.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
@@ -63,17 +63,23 @@ export class VoucherListComponent implements OnInit {
         if ((result as DialogAction).primary) {
           console.log('PRINTING');
 
-          this.voucherService.printVoucher( this.selectedVoucher, VoucherDocumentType.Original )
-          .subscribe( ( pdfBytes: Blob ) => {
-            const fileURL = URL.createObjectURL(pdfBytes);
-            window.open(fileURL);
-          },
-          (error: any) => {
-            this.toastr.error( 'Αδύνατη εκτύπωση Πρωτότυπου', 'Σφάλμα' );
-            console.error(error);
-          } );
+          this.busy = this.voucherService.printVoucher(this.selectedVoucher, VoucherDocumentType.Original)
+            .subscribe((pdfBytes: Blob) => {
 
-      }
+              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(pdfBytes);
+              } else {
+                const objectUrl = URL.createObjectURL(pdfBytes);
+                window.open(objectUrl);
+              }
+
+            },
+            (error: any) => {
+              this.toastr.error('Αδύνατη εκτύπωση Πρωτότυπου', 'Σφάλμα');
+              console.error(error);
+            });
+
+        }
         console.log('action', result);
       }
     });
@@ -84,7 +90,7 @@ export class VoucherListComponent implements OnInit {
 
     this.selectedVoucher = voucher;
 
-    const dialog = this.openDialog( 'Παρακαλώ επιβεβαιώστε την Εκτύπωση Αντιγράφου', 'Εκτύπωση', template );
+    const dialog = this.openDialog('Παρακαλώ επιβεβαιώστε την Εκτύπωση Αντιγράφου', 'Εκτύπωση', template);
 
     dialog.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
@@ -93,15 +99,21 @@ export class VoucherListComponent implements OnInit {
         if ((result as DialogAction).primary) {
           console.log('PRINTING');
 
-          this.voucherService.printVoucher( this.selectedVoucher, VoucherDocumentType.Copy )
-          .subscribe( ( pdfBytes: Blob ) => {
-            const fileURL = URL.createObjectURL(pdfBytes);
-            window.open(fileURL);
-          },
-          (error: any) => {
-            this.toastr.error( 'Αδύνατη εκτύπωση Αντιγράφου', 'Σφάλμα' );
-            console.error(error);
-          } );
+          this.busy = this.voucherService.printVoucher(this.selectedVoucher, VoucherDocumentType.Copy)
+            .subscribe((pdfBytes: Blob) => {
+
+              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(pdfBytes);
+              } else {
+                const objectUrl = URL.createObjectURL(pdfBytes);
+                window.open(objectUrl);
+              }
+
+            },
+            (error: any) => {
+              this.toastr.error('Αδύνατη εκτύπωση Αντιγράφου', 'Σφάλμα');
+              console.error(error);
+            });
 
         }
         console.log('action', result);
@@ -115,7 +127,7 @@ export class VoucherListComponent implements OnInit {
 
     this.selectedVoucher = voucher;
 
-    const dialog = this.openDialog( 'Παρακαλώ επιβεβαιώστε την Εκτύπωση Ειδοποιητηρίου', 'Εκτύπωση', template );
+    const dialog = this.openDialog('Παρακαλώ επιβεβαιώστε την Εκτύπωση Ειδοποιητηρίου', 'Εκτύπωση', template);
 
     dialog.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
@@ -124,15 +136,21 @@ export class VoucherListComponent implements OnInit {
         if ((result as DialogAction).primary) {
           console.log('PRINTING');
 
-          this.voucherService.printVoucher( this.selectedVoucher, VoucherDocumentType.Notification )
-          .subscribe( ( pdfBytes: Blob ) => {
-            const fileURL = URL.createObjectURL(pdfBytes);
-            window.open(fileURL);
-          },
-          (error: any) => {
-            this.toastr.error( 'Αδύνατη εκτύπωση Ειδοποιητηρίου', 'Σφάλμα' );
-            console.error(error);
-          } );
+          this.busy = this.voucherService.printVoucher(this.selectedVoucher, VoucherDocumentType.Notification)
+            .subscribe((pdfBytes: Blob) => {
+
+              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(pdfBytes);
+              } else {
+                const objectUrl = URL.createObjectURL(pdfBytes);
+                window.open(objectUrl);
+              }
+
+            },
+            (error: any) => {
+              this.toastr.error('Αδύνατη εκτύπωση Ειδοποιητηρίου', 'Σφάλμα');
+              console.error(error);
+            });
 
         }
         console.log('action', result);
@@ -145,7 +163,7 @@ export class VoucherListComponent implements OnInit {
     console.log(voucher);
     this.selectedVoucher = voucher;
 
-    const dialog = this.openDialog( 'Παρακαλώ επιβεβαιώστε την Αποποίηση Πρωτοτύπου', 'Αποποίηση', template );
+    const dialog = this.openDialog('Παρακαλώ επιβεβαιώστε την Αποποίηση Πρωτοτύπου', 'Αποποίηση', template);
 
     dialog.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
@@ -154,13 +172,14 @@ export class VoucherListComponent implements OnInit {
         if ((result as DialogAction).primary) {
           console.log('PRINTING');
 
-          this.voucherService.declineVoucher( this.selectedVoucher )
-          .subscribe( ( value: any ) => {
-          },
-          (error: any) => {
-            this.toastr.error( 'Αδύνατη Αποποίηση', 'Σφάλμα' );
-            console.error(error);
-          } );
+          this.busy = this.voucherService.declineVoucher(this.selectedVoucher)
+            .subscribe((value: any) => {
+              this.toastr.success('Επιτυχής Αποποίηση', 'Επιτυχία');
+            },
+            (error: any) => {
+              this.toastr.error('Αδύνατη Αποποίηση', 'Σφάλμα');
+              console.error(error);
+            });
 
         }
         console.log('action', result);
@@ -170,14 +189,14 @@ export class VoucherListComponent implements OnInit {
 
   printTest() {
     this.voucherService.printVoucherTest()
-      .subscribe( ( pdfBytes: Blob ) => {
+      .subscribe((pdfBytes: Blob) => {
         const fileURL = URL.createObjectURL(pdfBytes);
         window.open(fileURL);
       },
       (error: any) => {
-        this.toastr.error( '**************', 'Σφάλμα' );
+        this.toastr.error('**************', 'Σφάλμα');
         console.error(error);
-      } );
+      });
   }
 
   private openDialog(title: string, buttonText: string, template: TemplateRef<string>): DialogRef {

@@ -55,9 +55,11 @@ export class VouchersService {
 
     console.log(`Print Voucher Update URL: ${url}`);
 
-    return this.http.post(url, undefined, { withCredentials: true })
-      .map((response: Response) => response.arrayBuffer())
-      .map((arrayBuffer: ArrayBuffer) => new Uint8Array(arrayBuffer))
+    return this.http.post(url, undefined, { withCredentials: true, responseType: ResponseContentType.ArrayBuffer })
+      .map((res: Response) => {
+        console.log(res);
+        return new Blob([res.blob()], { type: 'application/pdf' });
+      })
       .catch((error: any) => {
         const errorMessage = error; // this.logging.logError( error );
         return Observable.throw(errorMessage);
@@ -72,7 +74,7 @@ export class VouchersService {
     console.log(`Print Voucher Update URL: ${url}`);
 
     return this.http.post(url, undefined, { withCredentials: true })
-      .map( ( response: Response ) => response as Response )
+      .map((response: Response) => response as Response)
       .catch((error: any) => {
         const errorMessage = error; // this.logging.logError( error );
         return Observable.throw(errorMessage);

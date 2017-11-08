@@ -63,7 +63,7 @@
 
 </div>
 
-<button class="btn btn-sm btn-danger" (click)="printTest()">Ειδοποιητήριο</button>
+<!--button class="btn btn-sm btn-danger" (click)="printTest()">Ειδοποιητήριο</button-->
 
 <div class="panel panel-primary">
 
@@ -79,7 +79,7 @@
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
             <button class="btn btn-sm btn-warning" (click)="printOriginal(dataItem, confirmationDialog)" 
                     *ngIf="dataItem.agentType === 0"
-                    [disabled]="dataItem.statusOriginal !== 3 && dataItem.statusOriginal !== 5">Πρωτότυπο</button>
+                    [disabled]="( dataItem.statusOriginal !== 3 && dataItem.statusOriginal !== 5 ) || dataItem.originalPrintouts >= 2">Πρωτότυπο</button>
             <button class="btn btn-sm btn-primary" (click)="printNotification(dataItem, confirmationDialog)" 
                     *ngIf="dataItem.agentType === 1"
                     [disabled]="dataItem.statusNotification !== 3 && dataItem.statusNotification !== 5">Ειδοποιητήριο</button>
@@ -87,7 +87,7 @@
                     [disabled]="dataItem.statusCopy !== 3 && dataItem.statusCopy !== 5">Αντίγραφο</button>
             <button class="btn btn-sm btn-danger" (click)="declineOriginal(dataItem, confirmationDialog)" 
                     *ngIf="dataItem.agentType === 0"
-                    [disabled]="dataItem.statusOriginal !== 3 && dataItem.statusOriginal !== 5">Αποποίηση</button>
+                    [disabled]="( dataItem.statusOriginal !== 3 && dataItem.statusOriginal !== 5 ) || dataItem.originalPrintouts >= 2">Αποποίηση</button>
           </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="contractNo" title="Αρ.Συμβολαίου" width="120"></kendo-grid-column>
@@ -100,6 +100,7 @@
         <kendo-grid-column field="firstName" title="Όνομα" width="150"></kendo-grid-column>
         <kendo-grid-column field="premiums" title="Μικτά Ασφάλιστρα" width="150" format="{0:C2}" ></kendo-grid-column>
         <kendo-grid-column field="typeOfPaymentDescr" title="Τρόπος Πληρωμής" width="200"></kendo-grid-column>
+        <!--kendo-grid-column field="originalPrintouts" title="Πρωτότυπες Εκτυπώσεις" width="100"></kendo-grid-column-->
       </kendo-grid>
 
     </div>
