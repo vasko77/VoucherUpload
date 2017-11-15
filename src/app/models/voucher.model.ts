@@ -22,6 +22,9 @@ export interface IVoucher {
     applicationNo: number;
     contractType: string;
     typeOfPaymentDescr: string;
+    packetCode: string;
+    pdfRetrieval: number;
+    custCode: number;
 }
 
 export enum VoucherStatus {

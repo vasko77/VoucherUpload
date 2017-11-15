@@ -66,13 +66,7 @@ export class VoucherListComponent implements OnInit {
           this.busy = this.voucherService.printVoucher(this.selectedVoucher, VoucherDocumentType.Original)
             .subscribe((pdfBytes: Blob) => {
 
-              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(pdfBytes);
-              } else {
-                const objectUrl = URL.createObjectURL(pdfBytes);
-                window.open(objectUrl);
-              }
-
+              this.openWindowWithPdf( pdfBytes );
             },
             (error: any) => {
               this.toastr.error('Αδύνατη εκτύπωση Πρωτότυπου', 'Σφάλμα');
@@ -102,13 +96,7 @@ export class VoucherListComponent implements OnInit {
           this.busy = this.voucherService.printVoucher(this.selectedVoucher, VoucherDocumentType.Copy)
             .subscribe((pdfBytes: Blob) => {
 
-              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(pdfBytes);
-              } else {
-                const objectUrl = URL.createObjectURL(pdfBytes);
-                window.open(objectUrl);
-              }
-
+              this.openWindowWithPdf( pdfBytes );
             },
             (error: any) => {
               this.toastr.error('Αδύνατη εκτύπωση Αντιγράφου', 'Σφάλμα');
@@ -139,13 +127,7 @@ export class VoucherListComponent implements OnInit {
           this.busy = this.voucherService.printVoucher(this.selectedVoucher, VoucherDocumentType.Notification)
             .subscribe((pdfBytes: Blob) => {
 
-              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(pdfBytes);
-              } else {
-                const objectUrl = URL.createObjectURL(pdfBytes);
-                window.open(objectUrl);
-              }
-
+              this.openWindowWithPdf( pdfBytes );
             },
             (error: any) => {
               this.toastr.error('Αδύνατη εκτύπωση Ειδοποιητηρίου', 'Σφάλμα');
@@ -187,18 +169,6 @@ export class VoucherListComponent implements OnInit {
     });
   }
 
-  printTest() {
-    this.voucherService.printVoucherTest()
-      .subscribe((pdfBytes: Blob) => {
-        const fileURL = URL.createObjectURL(pdfBytes);
-        window.open(fileURL);
-      },
-      (error: any) => {
-        this.toastr.error('**************', 'Σφάλμα');
-        console.error(error);
-      });
-  }
-
   private openDialog(title: string, buttonText: string, template: TemplateRef<string>): DialogRef {
 
     const dialog: DialogRef = this.dialogService.open({
@@ -215,6 +185,17 @@ export class VoucherListComponent implements OnInit {
 
     return dialog;
   }
+
+  private openWindowWithPdf( pdfBytes: Blob ) {
+
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(pdfBytes, 'file.pdf');
+    } else {
+      const objectUrl = URL.createObjectURL(pdfBytes);
+      window.open(objectUrl);
+    }
+  }
+
 }
 
 

@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  vouchersBaseUrl: 'http://localhost:37624/'
+  vouchersBaseUrl: 'http://localhost:37624/',
+  usersBaseUrl: 'http://localhost:33352/'
 };

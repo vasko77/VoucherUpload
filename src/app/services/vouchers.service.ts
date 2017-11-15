@@ -12,13 +12,14 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class VouchersService {
 
-  private baseUr = environment.vouchersBaseUrl;
+  private baseUrl = environment.vouchersBaseUrl;
+  private userBaseUrl = environment.usersBaseUrl;
 
   constructor(private http: Http) { }
 
   getVouchers(contractNo: number, renewalNo: Number, amendmentNo: Number, applicationNo: Number, taxNo: Number): Observable<IVoucher[]> {
 
-    const url = this.baseUr + `vouchers?contractNo=${contractNo}&renewalNo=${renewalNo}&amendmentNo=${amendmentNo}`
+    const url = this.baseUrl + `vouchers?contractNo=${contractNo}&renewalNo=${renewalNo}&amendmentNo=${amendmentNo}`
       + `&applicationNo=${applicationNo}&taxNo=${taxNo}`;
 
     console.log(`service url: ${url}`);
@@ -53,7 +54,7 @@ export class VouchersService {
       case VoucherDocumentType.Notification: url += 'notification'; break;
     }
 
-    console.log(`Print Voucher Update URL: ${url}`);
+    console.log(`Print Voucher URL: ${url}`);
 
     return this.http.post(url, undefined, { withCredentials: true, responseType: ResponseContentType.ArrayBuffer })
       .map((res: Response) => {
@@ -83,7 +84,7 @@ export class VouchersService {
   }
 
   getUser(): Observable<string> {
-    const url = this.baseUr + 'user';
+    const url = this.baseUrl + 'user';
 
     return this.http.get(url, { withCredentials: true })
       .map((response: Response) => {

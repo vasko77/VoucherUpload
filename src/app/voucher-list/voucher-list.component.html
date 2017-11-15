@@ -100,6 +100,12 @@
         <kendo-grid-column field="firstName" title="Όνομα" width="150"></kendo-grid-column>
         <kendo-grid-column field="premiums" title="Μικτά Ασφάλιστρα" width="150" format="{0:C2}" ></kendo-grid-column>
         <kendo-grid-column field="typeOfPaymentDescr" title="Τρόπος Πληρωμής" width="200"></kendo-grid-column>
+        <kendo-grid-column field="id" width="100" title="Booklet" >
+          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+            <a class="btn btn-sm btn-success" href="assets/Booklet.PDF" 
+               [ngClass]="{ disabled: dataItem.packetCode === 316 && dataItem.packetCode === 319 && dataItem.packetCode === 324 && dataItem.packetCode === 325 && dataItem.packetCode === 312 && dataItem.packetCode === 313 }" download>Download</a>
+          </ng-template>
+        </kendo-grid-column>
         <!--kendo-grid-column field="originalPrintouts" title="Πρωτότυπες Εκτυπώσεις" width="100"></kendo-grid-column-->
       </kendo-grid>
 
