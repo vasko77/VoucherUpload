@@ -169,6 +169,40 @@ export class VoucherListComponent implements OnInit {
     });
   }
 
+  isOriginalDisabled( voucher: IVoucher ): boolean {
+    return ( voucher.statusOriginal !== 3 && voucher.statusOriginal !== 5 ) || voucher.originalPrintouts >= 2;
+  }
+
+  isCopyDisabled( voucher: IVoucher ): boolean {
+    return voucher.statusCopy !== 3 && voucher.statusCopy !== 5;
+  }
+
+  isNotificationDisabled( voucher: IVoucher ): boolean {
+    return voucher.statusNotification !== 3 && voucher.statusNotification !== 5;
+  }
+
+  isDeclineDisabled( voucher: IVoucher ): boolean {
+    return ( voucher.statusOriginal !== 3 && voucher.statusOriginal !== 5 ) || voucher.originalPrintouts >= 2  || !voucher.commercial;
+  }
+
+  isBookletDisabled( voucher: IVoucher ): boolean {
+    return !( voucher.packetCode === '316' || voucher.packetCode === '319'
+           || voucher.packetCode === '324' || voucher.packetCode === '325'
+           || voucher.packetCode === '312' || voucher.packetCode === '313' );
+  }
+
+  getDeclineDenialReason( voucher: IVoucher ): string {
+    if ( voucher.commercial ) {
+      return 'Commercial';
+    }
+    if ( voucher.originalPrintouts >= 2 ) {
+      return '2 Πρωτότυπα';
+    }
+    if ( voucher.statusOriginal < 3 ) {
+      return 'Μη αναρτημένο';
+    }
+  }
+
   private openDialog(title: string, buttonText: string, template: TemplateRef<string>): DialogRef {
 
     const dialog: DialogRef = this.dialogService.open({

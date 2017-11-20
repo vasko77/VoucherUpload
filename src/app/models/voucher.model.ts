@@ -13,6 +13,7 @@ export interface IVoucher {
     statusNotification: VoucherStatus;
     lastName: string;
     firstName: string;
+    fullName: string;
     taxNo: number;
     premiums: number;
     issueDate: Date;
@@ -23,8 +24,11 @@ export interface IVoucher {
     contractType: string;
     typeOfPaymentDescr: string;
     packetCode: string;
+    originalPrintouts: number;
+    commercial: boolean;
     pdfRetrieval: number;
     custCode: number;
+    isPaidDescr: string;
 }
 
 export enum VoucherStatus {
