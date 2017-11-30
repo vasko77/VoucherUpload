@@ -6,11 +6,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IntlModule } from '@progress/kendo-angular-intl';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import '@progress/kendo-angular-intl/locales/el/all';
+import 'hammerjs';
 
 import { GridModule } from '@progress/kendo-angular-grid';
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
+import { MatTooltipModule } from '@angular/material';
 
 import { MySpotModule } from '../my-spot/my-spot.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -34,6 +36,7 @@ import { BusyModule } from 'angular2-busy';
     BrowserAnimationsModule,
     HttpModule,
     FormsModule,
+    MatTooltipModule,
     ToastModule.forRoot(),
     BusyModule,
     GridModule,

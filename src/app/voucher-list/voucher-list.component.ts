@@ -182,7 +182,7 @@ export class VoucherListComponent implements OnInit {
   }
 
   isDeclineDisabled( voucher: IVoucher ): boolean {
-    return ( voucher.statusOriginal !== 3 && voucher.statusOriginal !== 5 ) || voucher.originalPrintouts >= 2  || !voucher.commercial;
+    return ( voucher.statusOriginal !== 3 ) || voucher.originalPrintouts >= 2  || !voucher.commercial;
   }
 
   isBookletDisabled( voucher: IVoucher ): boolean {
@@ -191,9 +191,32 @@ export class VoucherListComponent implements OnInit {
            || voucher.packetCode === '312' || voucher.packetCode === '313' );
   }
 
+  bookletHref( voucher: IVoucher ): string {
+    if ( voucher.packetCode === '316' || voucher.packetCode === '319'
+      || voucher.packetCode === '324' || voucher.packetCode === '325'
+      || voucher.packetCode === '312' || voucher.packetCode === '313' ) {
+        return 'assets/Booklet.PDF';
+      }
+      return '';
+  }
+
+  getOriginalDenialReason( voucher: IVoucher ): string {
+    if ( voucher.statusOriginal < 3 ) {
+      return 'Μη αναρτημένο';
+    }
+    if ( voucher.originalPrintouts >= 2 ) {
+      return '2 Πρωτότυπα';
+    }
+    if ( voucher.statusOriginal === 9 ) {
+      return 'Αποποιημένο';
+    }
+    return '';
+  }
+
   getDeclineDenialReason( voucher: IVoucher ): string {
-    if ( voucher.commercial ) {
-      return 'Commercial';
+
+    if ( !voucher.commercial ) {
+      return 'Όχι Commercial';
     }
     if ( voucher.originalPrintouts >= 2 ) {
       return '2 Πρωτότυπα';
@@ -201,6 +224,20 @@ export class VoucherListComponent implements OnInit {
     if ( voucher.statusOriginal < 3 ) {
       return 'Μη αναρτημένο';
     }
+    if ( voucher.statusOriginal === 5 ) {
+      return 'Εκτυπωμένο';
+    }
+    if ( voucher.statusOriginal === 9 ) {
+      return 'Αποποιημένο';
+    }
+    return '';
+  }
+
+  getCopyDenialReason( voucher: IVoucher ): string {
+    if ( voucher.statusCopy < 3 ) {
+      return 'Μη αναρτημένο';
+    }
+    return '';
   }
 
   private openDialog(title: string, buttonText: string, template: TemplateRef<string>): DialogRef {

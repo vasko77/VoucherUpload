@@ -74,33 +74,50 @@
   <div class="panel-body">
 
     <div>
-      <kendo-grid [data]="vouchers" style="height: 200px">
-        <kendo-grid-column field="id" width="300" title="Εκτυπώσεις" [locked]="true">
+      <kendo-grid [data]="vouchers" style="height: 400px" [resizable]="true">
+        <kendo-grid-column field="id" width="330" title="Εκτυπώσεις" 
+                           [headerStyle]="{'text-align': 'center'}" [locked]="true">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
             
-            <button class="btn btn-sm btn-warning" 
-                    *ngIf="dataItem.agentType === 0"
-                    (click)="printOriginal(dataItem, confirmationDialog)" 
-                    [disabled]="isOriginalDisabled( dataItem )">Πρωτότυπο</button>
+            <span [matTooltip]="getOriginalDenialReason( dataItem )"
+                  [matTooltipDisabled]="!isOriginalDisabled( dataItem )"
+                  matTooltipPosition="right" >
+              <button class="btn btn-sm btn-warning" 
+                      *ngIf="dataItem.agentType === 0"
+                      (click)="printOriginal(dataItem, confirmationDialog)" 
+                      [disabled]="isOriginalDisabled( dataItem )">Πρωτότυπο</button>
+            </span>
 
             <button class="btn btn-sm btn-primary"  
                     *ngIf="dataItem.agentType === 1"
                     (click)="printNotification(dataItem, confirmationDialog)"
                     [disabled]="isNotificationDisabled( dataItem )">Ειδοποιητήριο</button>
 
-            <button class="btn btn-sm btn-success" 
+            <span [matTooltip]="getCopyDenialReason( dataItem )"
+                  [matTooltipDisabled]="!isCopyDisabled( dataItem )"
+                  matTooltipPosition="right" >
+              <button class="btn btn-sm btn-success" 
                     (click)="printCopy(dataItem, confirmationDialog)" 
                     [disabled]="isCopyDisabled( dataItem )">Αντίγραφο</button>
+            </span>
 
-            <button class="btn btn-sm btn-danger" 
+            <span [matTooltip]="getDeclineDenialReason( dataItem )"
+                  [matTooltipDisabled]="!isDeclineDisabled( dataItem )"
+                  matTooltipPosition="right" >
+              <button class="btn btn-sm btn-danger" 
                     *ngIf="dataItem.agentType === 0"
                     (click)="declineOriginal(dataItem, confirmationDialog)" 
                     [disabled]="isDeclineDisabled( dataItem )">Αποποίηση</button>
+            </span>
 
-            <button class="btn btn-sm btn-warning" 
-                    *ngIf="dataItem.agentType === 1"
-                    (click)="printOriginal(dataItem, confirmationDialog)" 
-                    [disabled]="isOriginalDisabled( dataItem )">Πρωτότυπο</button>
+            <span [matTooltip]="getOriginalDenialReason( dataItem )"
+                  [matTooltipDisabled]="!isOriginalDisabled( dataItem )"
+                  matTooltipPosition="right" >
+              <button class="btn btn-sm btn-warning" 
+                      *ngIf="dataItem.agentType === 1"
+                      (click)="printOriginal(dataItem, confirmationDialog)" 
+                      [disabled]="isOriginalDisabled( dataItem )">Αντίγραφο Πελάτη</button>
+            </span>
 
           </ng-template>
         </kendo-grid-column>
@@ -113,15 +130,16 @@
         <kendo-grid-column field="startDate" title="Ημ.Έναρξης" width="120" format="{0:dd/MM/yyyy}"></kendo-grid-column>
         <kendo-grid-column field="endDate" title="Ημ.Λήξης" width="120" format="{0:dd/MM/yyyy}"></kendo-grid-column>
         <kendo-grid-column field="fullName" title="Ονοματεπώνυμο" width="250"></kendo-grid-column>
-        <kendo-grid-column field="premiums" title="Μικτά Ασφάλιστρα" width="150" format="{0:C2}" ></kendo-grid-column>
+        <kendo-grid-column field="premiums" title="Μικτά Ασφάλιστρα" width="150" format="{0:C2}" 
+                           [style]="{'text-align': 'right'}" [headerStyle]="{'text-align': 'right'}"></kendo-grid-column>
         <kendo-grid-column field="typeOfPaymentDescr" title="Τρόπος Πληρωμής" width="200"></kendo-grid-column>
         <kendo-grid-column field="isPaidDescr" title="Εξόφληση" width="100"></kendo-grid-column>
-        <kendo-grid-column field="packetCode" title="Packet" width="50"></kendo-grid-column>
-        <kendo-grid-column field="id" width="100" title="Booklet" >
+        <kendo-grid-column field="packetCode" title="Packet" width="100"></kendo-grid-column>
+        <kendo-grid-column field="id" width="80" title="Booklet">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-            <button class="btn btn-sm btn-success" href="assets/Booklet.PDF" [disabled]="isBookletDisabled( dataItem )" download>
+            <a [ngClass]="{ disabled: isBookletDisabled( dataItem ) }" href="assets/Booklet.PDF"  download>
                Download
-          </button>
+            </a>
           </ng-template>
         </kendo-grid-column>
         <!--kendo-grid-column field="originalPrintouts" title="Πρωτότυπες Εκτυπώσεις" width="100"></kendo-grid-column-->
