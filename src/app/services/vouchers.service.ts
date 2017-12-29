@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-import { IVoucher, VoucherStatus, VoucherType, VoucherDocumentType } from '../models/voucher.model';
+import { IVoucher, VoucherStatus, VoucherDocumentType } from '../models/voucher.model';
 import { GridDataResult } from '@progress/kendo-angular-grid';
 import { environment } from '../../environments/environment';
 
@@ -24,7 +24,12 @@ export class VouchersService {
 
     console.log(`service url: ${url}`);
 
-    return this.http.get(url, { withCredentials: true })
+    const headers: Headers = new Headers();
+    headers.append('Cache-Control', 'no-cache');
+    headers.append('Pragma', 'no-cache');
+    headers.append('Expires', '0');
+
+    return this.http.get(url, { headers: headers, withCredentials: true })
       .map((response: Response) => {
         const vouchers = response.json() as IVoucher[];
         return vouchers;

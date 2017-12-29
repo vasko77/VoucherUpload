@@ -54,7 +54,13 @@ export class VoucherListComponent implements OnInit {
 
     this.selectedVoucher = voucher;
 
-    const dialog: DialogRef = this.openDialog('Παρακαλώ επιβεβαιώστε την Εκτύπωση Πρωτοτύπου', 'Εκτύπωση', template);
+    let dialog: DialogRef;
+
+    if ( voucher.agentType === 1 ) {
+      dialog = this.openDialog('Παρακαλώ επιβεβαιώστε την Εκτύπωση Αντίγρ.Πελ.', 'Εκτύπωση', template);
+    } else {
+      dialog = this.openDialog('Παρακαλώ επιβεβαιώστε την Εκτύπωση Πρωτοτύπου', 'Εκτύπωση', template);
+    }
 
     dialog.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
@@ -182,11 +188,15 @@ export class VoucherListComponent implements OnInit {
   }
 
   isDeclineDisabled( voucher: IVoucher ): boolean {
-    return ( voucher.statusOriginal !== 3 ) || voucher.originalPrintouts >= 2  || !voucher.commercial;
+    return voucher.statusOriginal !== 3
+        || voucher.originalPrintouts >= 2
+        || !voucher.commercial
+        || voucher.voucherType === 'P';
   }
 
   isBookletDisabled( voucher: IVoucher ): boolean {
-    return !( voucher.packetCode === '316' || voucher.packetCode === '319'
+    return voucher.voucherType === 'P'
+        || !( voucher.packetCode === '316' || voucher.packetCode === '319'
            || voucher.packetCode === '324' || voucher.packetCode === '325'
            || voucher.packetCode === '312' || voucher.packetCode === '313' );
   }
@@ -215,7 +225,10 @@ export class VoucherListComponent implements OnInit {
 
   getDeclineDenialReason( voucher: IVoucher ): string {
 
-    if ( !voucher.commercial ) {
+    if ( voucher.voucherType === 'P' ) {
+      return 'Πρόσθετη Πράξη';
+    }
+   if ( !voucher.commercial ) {
       return 'Όχι Commercial';
     }
     if ( voucher.originalPrintouts >= 2 ) {
@@ -235,6 +248,13 @@ export class VoucherListComponent implements OnInit {
 
   getCopyDenialReason( voucher: IVoucher ): string {
     if ( voucher.statusCopy < 3 ) {
+      return 'Μη αναρτημένο';
+    }
+    return '';
+  }
+
+  getNotificationDenialReason( voucher: IVoucher ): string {
+    if ( voucher.statusNotification < 3 ) {
       return 'Μη αναρτημένο';
     }
     return '';

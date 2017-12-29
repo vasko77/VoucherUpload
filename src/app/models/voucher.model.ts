@@ -4,7 +4,8 @@ export interface IVoucher {
     contractNo: number;
     renewalNo: number;
     amendmentNo: number;
-    voucherType: VoucherType;
+    voucherType: string;
+    agentType: number;
     isPaid: boolean;
     isRemoved: boolean;
     status: VoucherStatus;
@@ -38,13 +39,6 @@ export enum VoucherStatus {
     uploaded = 3,
     printed = 5,
     declined = 9
-}
-
-export enum VoucherType {
-    Contract,
-    Renewal,
-    Amendment,
-    Installment
 }
 
 export enum VoucherDocumentType {
