@@ -23,6 +23,7 @@ export class VoucherListComponent implements OnInit {
 
   vouchers: IVoucher[];
   selectedVoucher: IVoucher;
+  decline: boolean;
   pdfUrl: string;
   pdfBytes: Uint8Array;
 
@@ -53,6 +54,7 @@ export class VoucherListComponent implements OnInit {
     console.log(voucher);
 
     this.selectedVoucher = voucher;
+    this.decline = false;
 
     let dialog: DialogRef;
 
@@ -89,6 +91,7 @@ export class VoucherListComponent implements OnInit {
     console.log(voucher);
 
     this.selectedVoucher = voucher;
+    this.decline = false;
 
     const dialog = this.openDialog('Παρακαλώ επιβεβαιώστε την Εκτύπωση Αντιγράφου', 'Εκτύπωση', template);
 
@@ -120,6 +123,7 @@ export class VoucherListComponent implements OnInit {
     console.log(voucher);
 
     this.selectedVoucher = voucher;
+    this.decline = false;
 
     const dialog = this.openDialog('Παρακαλώ επιβεβαιώστε την Εκτύπωση Ειδοποιητηρίου', 'Εκτύπωση', template);
 
@@ -150,8 +154,9 @@ export class VoucherListComponent implements OnInit {
   declineOriginal(voucher: IVoucher, template: TemplateRef<string>) {
     console.log(voucher);
     this.selectedVoucher = voucher;
+    this.decline = true;
 
-    const dialog = this.openDialog('Παρακαλώ επιβεβαιώστε την Αποποίηση Πρωτοτύπου', 'Αποποίηση', template);
+    const dialog = this.openDialog('Παρακαλώ επιβεβαιώστε την Εκτύπωση από Eurolife', 'Εκτύπωση από Eurolife', template);
 
     dialog.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
@@ -162,10 +167,11 @@ export class VoucherListComponent implements OnInit {
 
           this.busy = this.voucherService.declineVoucher(this.selectedVoucher)
             .subscribe((value: any) => {
-              this.toastr.success('Επιτυχής Αποποίηση', 'Επιτυχία');
+              this.selectedVoucher.statusOriginal = 9;
+              this.toastr.success('Επιτυχής Εκτύπωση από Eurolife', 'Επιτυχία');
             },
             (error: any) => {
-              this.toastr.error('Αδύνατη Αποποίηση', 'Σφάλμα');
+              this.toastr.error('Αδύνατη Εκτύπωση από Eurolife', 'Σφάλμα');
               console.error(error);
             });
 
@@ -189,13 +195,14 @@ export class VoucherListComponent implements OnInit {
 
   isDeclineDisabled( voucher: IVoucher ): boolean {
     return voucher.statusOriginal !== 3
-        || voucher.originalPrintouts >= 2
         || !voucher.commercial
-        || voucher.voucherType === 'P';
+        || voucher.voucherType === 'P'
+        || voucher.voucherType === 'C';
   }
 
   isBookletDisabled( voucher: IVoucher ): boolean {
     return voucher.voucherType === 'P'
+        || voucher.voucherType === 'C'
         || !( voucher.packetCode === '316' || voucher.packetCode === '319'
            || voucher.packetCode === '324' || voucher.packetCode === '325'
            || voucher.packetCode === '312' || voucher.packetCode === '313' );
@@ -214,11 +221,8 @@ export class VoucherListComponent implements OnInit {
     if ( voucher.statusOriginal < 3 ) {
       return 'Μη αναρτημένο';
     }
-    if ( voucher.originalPrintouts >= 2 ) {
-      return '2 Πρωτότυπα';
-    }
     if ( voucher.statusOriginal === 9 ) {
-      return 'Αποποιημένο';
+      return 'Θα εκτυπωθεί από Eurolife';
     }
     return '';
   }
@@ -228,11 +232,11 @@ export class VoucherListComponent implements OnInit {
     if ( voucher.voucherType === 'P' ) {
       return 'Πρόσθετη Πράξη';
     }
+    if ( voucher.voucherType === 'C' ) {
+      return 'Ακύρωση';
+    }
    if ( !voucher.commercial ) {
       return 'Όχι Commercial';
-    }
-    if ( voucher.originalPrintouts >= 2 ) {
-      return '2 Πρωτότυπα';
     }
     if ( voucher.statusOriginal < 3 ) {
       return 'Μη αναρτημένο';
@@ -241,7 +245,7 @@ export class VoucherListComponent implements OnInit {
       return 'Εκτυπωμένο';
     }
     if ( voucher.statusOriginal === 9 ) {
-      return 'Αποποιημένο';
+      return 'Θα εκτύπωθει από Eurolife';
     }
     return '';
   }
@@ -270,7 +274,7 @@ export class VoucherListComponent implements OnInit {
         { text: buttonText, primary: true }
       ],
       width: 550,
-      height: 250,
+      height: this.decline ? 300 : 250,
       minWidth: 250
     });
 

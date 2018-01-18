@@ -11,7 +11,7 @@
     <div class="row">
 
       <div class="form-group-sm col-sm-6">
-        <label class="col-sm-4">Αρ. Συμβολαίου</label>
+        <label class="col-sm-6">Αρ. Συμβολαίου</label>
         <div class="col-sm-6">
           <input [(ngModel)]="contractNo" type="number" class="form-control" >
         </div>
@@ -29,7 +29,7 @@
     <div class="row">
 
       <div class="form-group-sm col-sm-6">
-        <label class="col-sm-4">Αρ. Ανανέωσης</label>
+        <label class="col-sm-6">Αρ. Ανανέωσης</label>
         <div class="col-sm-6">
           <input [(ngModel)]="renewalNo" type="number" class="form-control" >
         </div>
@@ -47,7 +47,7 @@
     <div class="row">
 
       <div class="form-group-sm col-sm-6">
-        <label class="col-sm-4">Αρ. Πρόσθετης</label>
+        <label class="col-sm-6">Αρ. Πρόσθετης Πράξης</label>
         <div class="col-sm-6">
           <input [(ngModel)]="amendmentNo" type="number" class="form-control" >
         </div>
@@ -75,17 +75,17 @@
 
     <div>
       <kendo-grid [data]="vouchers" style="height: 400px" [resizable]="true">
-        <kendo-grid-column field="id" width="330" title="Εκτυπώσεις" 
+        <kendo-grid-column field="id" width="420" title="Εκτυπώσεις" 
                            [headerStyle]="{'text-align': 'center'}" [locked]="true">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
             
             <span [matTooltip]="getOriginalDenialReason( dataItem )"
                   [matTooltipDisabled]="!isOriginalDisabled( dataItem )"
                   matTooltipPosition="right" >
-              <button class="btn btn-sm btn-warning" 
+              <button class="btn btn-sm btn-success" 
                       *ngIf="dataItem.agentType === 0"
                       (click)="printOriginal(dataItem, confirmationDialog)" 
-                      [disabled]="isOriginalDisabled( dataItem )">Πρωτότυπο</button>
+                      [disabled]="isOriginalDisabled( dataItem )">Πρωτότυπο & Φωτ.Αντίγραφο Συνεργάτη</button>
             </span>
 
             <span [matTooltip]="getNotificationDenialReason( dataItem )"
@@ -101,8 +101,9 @@
                   [matTooltipDisabled]="!isCopyDisabled( dataItem )"
                   matTooltipPosition="right" >
               <button class="btn btn-sm btn-success" 
+                    *ngIf="dataItem.agentType === 1"
                     (click)="printCopy(dataItem, confirmationDialog)" 
-                    [disabled]="isCopyDisabled( dataItem )">Αντίγραφο</button>
+                    [disabled]="isCopyDisabled( dataItem )">Φωτ.Αντίγρ.Συνεργάτη</button>
             </span>
 
             <span [matTooltip]="getDeclineDenialReason( dataItem )"
@@ -111,7 +112,7 @@
               <button class="btn btn-sm btn-danger" 
                     *ngIf="dataItem.agentType === 0"
                     (click)="declineOriginal(dataItem, confirmationDialog)" 
-                    [disabled]="isDeclineDisabled( dataItem )">Αποποίηση</button>
+                    [disabled]="isDeclineDisabled( dataItem )">Εκτύπωση από Eurolife</button>
             </span>
 
             <span [matTooltip]="getOriginalDenialReason( dataItem )"
@@ -125,29 +126,30 @@
 
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column field="contractType" title="Είδος" width="120"></kendo-grid-column>
-        <kendo-grid-column field="contractNo" title="Αρ.Συμβολαίου" width="120"></kendo-grid-column>
-        <kendo-grid-column field="renewalNo" title="Αρ.Ανανέωσης" width="120"></kendo-grid-column>
-        <kendo-grid-column field="amendmentNo" title="Αρ.Πρόσθετης" width="120"></kendo-grid-column>
-        <kendo-grid-column field="klados" title="Κλάδος" width="80"></kendo-grid-column>
-        <kendo-grid-column field="issueDate" title="Ημ.Έκδοσης" width="120" format="{0:dd/MM/yyyy}"></kendo-grid-column>
-        <kendo-grid-column field="startDate" title="Ημ.Έναρξης" width="120" format="{0:dd/MM/yyyy}"></kendo-grid-column>
-        <kendo-grid-column field="endDate" title="Ημ.Λήξης" width="120" format="{0:dd/MM/yyyy}"></kendo-grid-column>
-        <kendo-grid-column field="fullName" title="Ονοματεπώνυμο" width="250"></kendo-grid-column>
-        <kendo-grid-column field="premiums" title="Μικτά Ασφάλιστρα" width="150" format="{0:C2}" 
-                           [style]="{'text-align': 'right'}" [headerStyle]="{'text-align': 'right'}"></kendo-grid-column>
-        <kendo-grid-column field="typeOfPaymentDescr" title="Τρόπος Πληρωμής" width="200"></kendo-grid-column>
-        <kendo-grid-column field="isPaidDescr" title="Εξόφληση" width="100"></kendo-grid-column>
-        <kendo-grid-column field="commercial" title="Commercial" width="100"></kendo-grid-column>
-        <kendo-grid-column field="packetCode" title="Packet" width="100"></kendo-grid-column>
-        <kendo-grid-column field="id" width="80" title="Booklet">
-          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+        <kendo-grid-column field="contractType" title="Είδος" width="80"></kendo-grid-column>
+        <kendo-grid-column field="id" width="150" title="Οδηγός Ασφάλισης (Όροι Ασφάλισης)" 
+                            [headerStyle]="{ 'overflow': 'visible', 'white-space': 'normal' }">
+          <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" >
             <a [ngClass]="{ disabled: isBookletDisabled( dataItem ) }" href="assets/Booklet.PDF"  download>
                Download
             </a>
           </ng-template>
         </kendo-grid-column>
-        <!--kendo-grid-column field="originalPrintouts" title="Πρωτότυπες Εκτυπώσεις" width="100"></kendo-grid-column-->
+        <kendo-grid-column field="contractNo" title="Αρ.Συμβολαίου" width="140"></kendo-grid-column>
+        <kendo-grid-column field="renewalNo" title="Αρ.Ανανέωσης" width="120"></kendo-grid-column>
+        <kendo-grid-column field="amendmentNo" title="Αρ.Πρόσθετης" width="120"></kendo-grid-column>
+        <kendo-grid-column field="fullName" title="Ονοματεπώνυμο" width="300"></kendo-grid-column>
+        <kendo-grid-column field="klados" title="Κλάδος" width="100"></kendo-grid-column>
+        <kendo-grid-column field="issueDate" title="Ημ.Έκδοσης" width="120" format="{0:dd/MM/yyyy}"></kendo-grid-column>
+        <kendo-grid-column field="startDate" title="Ημ.Έναρξης" width="120" format="{0:dd/MM/yyyy}"></kendo-grid-column>
+        <kendo-grid-column field="endDate" title="Ημ.Λήξης" width="120" format="{0:dd/MM/yyyy}"></kendo-grid-column>
+        <kendo-grid-column field="premiums" title="Μικτά Ασφάλιστρα" width="150" format="{0:C2}" 
+                           [style]="{'text-align': 'right'}" [headerStyle]="{'text-align': 'right'}"></kendo-grid-column>
+        <kendo-grid-column field="typeOfPaymentDescr" title="Τρόπος Πληρωμής" width="200"></kendo-grid-column>
+        <kendo-grid-column field="isPaidDescr" title="Εξόφληση" width="100"></kendo-grid-column>
+        <kendo-grid-column field="mortgageDescr" title="Ενυπόθηκο" width="100"></kendo-grid-column>
+        <!--kendo-grid-column field="commercial" title="Commercial" width="100"></kendo-grid-column>
+        <kendo-grid-column field="packetCode" title="Packet" width="100"></kendo-grid-column-->
       </kendo-grid>
 
     </div>
@@ -157,6 +159,10 @@
 </div>
 
 <ng-template #confirmationDialog>
+
+  <div *ngIf="decline">
+    <p>Με την επιλογή του, η εκτύπωση του παραστατικού θα πραγματοποιηθεί από την εταιρία και θα σας αποσταλεί</p>
+  </div>
 
   <div class="form-group-sm">
     <label class="col-sm-6">Αρ. Συμβολαίου</label>

@@ -30,6 +30,8 @@ export interface IVoucher {
     pdfRetrieval: number;
     custCode: number;
     isPaidDescr: string;
+    mortgage: boolean;
+    mortgageDescr: string;
 }
 
 export enum VoucherStatus {
