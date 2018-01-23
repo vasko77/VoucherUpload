@@ -20,6 +20,8 @@ export class VoucherListComponent implements OnInit {
   amendmentNo: Number;
   applicationNo: Number;
   taxNo: Number;
+  dateFrom: Date;
+  dateTo: Date;
 
   vouchers: IVoucher[];
   selectedVoucher: IVoucher;
@@ -38,7 +40,8 @@ export class VoucherListComponent implements OnInit {
   }
 
   getVouchers() {
-    this.busy = this.voucherService.getVouchers(this.contractNo, this.renewalNo, this.amendmentNo, this.applicationNo, this.taxNo)
+    this.busy = this.voucherService.getVouchers( this.contractNo, this.renewalNo, this.amendmentNo, this.applicationNo, this.taxNo,
+                                                 this.dateFrom, this.dateTo )
       .subscribe((vouchers: IVoucher[]) => {
         this.vouchers = vouchers;
         console.log(this.vouchers);
@@ -236,7 +239,7 @@ export class VoucherListComponent implements OnInit {
       return 'Ακύρωση';
     }
    if ( !voucher.commercial ) {
-      return 'Όχι Commercial';
+      return 'Κατοικία';
     }
     if ( voucher.statusOriginal < 3 ) {
       return 'Μη αναρτημένο';

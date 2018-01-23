@@ -4,6 +4,7 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IntlModule } from '@progress/kendo-angular-intl';
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import '@progress/kendo-angular-intl/locales/el/all';
 import 'hammerjs';
@@ -42,6 +43,7 @@ import { BusyModule } from 'angular2-busy';
     GridModule,
     PDFExportModule,
     DialogModule,
+    DateInputsModule,
     AppRoutingModule,
     MySpotModule
   ],

@@ -13,14 +13,28 @@ import { environment } from '../../environments/environment';
 export class VouchersService {
 
   private baseUrl = environment.vouchersBaseUrl;
-  private userBaseUrl = environment.usersBaseUrl;
 
   constructor(private http: Http) { }
 
-  getVouchers(contractNo: number, renewalNo: Number, amendmentNo: Number, applicationNo: Number, taxNo: Number): Observable<IVoucher[]> {
+  getVouchers( contractNo: number, renewalNo: Number, amendmentNo: Number, applicationNo: Number, taxNo: Number,
+               dateFrom: Date, dateTo: Date ): Observable<IVoucher[]> {
+
+  console.log( dateFrom, dateTo );
+  if ( dateFrom ) {
+    dateFrom.setHours( 2 );
+  }
+  if ( dateTo ) {
+    dateTo.setHours( 2 );
+  }
+
+  if ( dateFrom && dateTo ) {
+     console.log( dateFrom.toISOString(), dateTo.toISOString() );
+  }
 
     const url = this.baseUrl + `vouchers?contractNo=${contractNo}&renewalNo=${renewalNo}&amendmentNo=${amendmentNo}`
-      + `&applicationNo=${applicationNo}&taxNo=${taxNo}`;
+      + `&applicationNo=${applicationNo}&taxNo=${taxNo}`
+      + `&dateFrom=${ dateFrom ? dateFrom.toISOString().substring(0, 10) : ''}`
+      + `&dateTo=${ dateTo ? dateTo.toISOString().substring(0, 10) : '' }`;
 
     console.log(`service url: ${url}`);
 
