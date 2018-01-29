@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  vouchersBaseUrl: 'https://nettest.eurolife.gr/VoucherUploadApi/',
+  vouchersBaseUrl: 'https://net.eurolife.gr/VoucherUploadApi/',
 };
