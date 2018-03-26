@@ -185,7 +185,7 @@ export class VoucherListComponent implements OnInit {
   }
 
   isOriginalDisabled( voucher: IVoucher ): boolean {
-    return ( voucher.statusOriginal !== 3 && voucher.statusOriginal !== 5 ) || voucher.originalPrintouts >= 2;
+    return ( voucher.statusOriginal !== 3 && voucher.statusOriginal !== 5 );
   }
 
   isCopyDisabled( voucher: IVoucher ): boolean {
