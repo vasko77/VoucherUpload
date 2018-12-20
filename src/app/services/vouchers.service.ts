@@ -71,6 +71,7 @@ export class VouchersService {
       case VoucherDocumentType.Original: url += 'original'; break;
       case VoucherDocumentType.Copy: url += 'copy'; break;
       case VoucherDocumentType.Notification: url += 'notification'; break;
+      case VoucherDocumentType.Proposal: url += 'proposal'; break;
     }
 
     console.log(`Print Voucher URL: ${url}`);

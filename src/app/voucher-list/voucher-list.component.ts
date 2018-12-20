@@ -122,6 +122,38 @@ export class VoucherListComponent implements OnInit {
 
   }
 
+  printProposal(voucher: IVoucher, template: TemplateRef<string>) {
+    console.log(voucher);
+
+    this.selectedVoucher = voucher;
+    this.decline = false;
+
+    const dialog = this.openDialog('Παρακαλώ επιβεβαιώστε την Εκτύπωση Αίτησης', 'Εκτύπωση', template);
+
+    dialog.result.subscribe((result) => {
+      if (result instanceof DialogCloseResult) {
+        console.log('close');
+      } else {
+        if ((result as DialogAction).primary) {
+          console.log('PRINTING');
+
+          this.busy = this.voucherService.printVoucher(this.selectedVoucher, VoucherDocumentType.Proposal)
+            .subscribe((pdfBytes: Blob) => {
+
+              this.openWindowWithPdf( pdfBytes );
+            },
+            (error: any) => {
+              this.toastr.error('Αδύνατη εκτύπωση Αίτησης', 'Σφάλμα');
+              console.error(error);
+            });
+
+        }
+        console.log('action', result);
+      }
+    });
+
+  }
+
   printNotification(voucher: IVoucher, template: TemplateRef<string>) {
     console.log(voucher);
 
