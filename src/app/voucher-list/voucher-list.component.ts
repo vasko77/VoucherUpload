@@ -208,12 +208,14 @@ export class VoucherListComponent implements OnInit {
         || voucher.voucherType === 'C'
         || !( voucher.packetCode === '316' || voucher.packetCode === '319'
            || voucher.packetCode === '324' || voucher.packetCode === '325'
+           || voucher.packetCode === '322' || voucher.packetCode === '323'
            || voucher.packetCode === '312' || voucher.packetCode === '313' );
   }
 
   bookletHref( voucher: IVoucher ): string {
     if ( voucher.packetCode === '316' || voucher.packetCode === '319'
       || voucher.packetCode === '324' || voucher.packetCode === '325'
+      || voucher.packetCode === '322' || voucher.packetCode === '323'
       || voucher.packetCode === '312' || voucher.packetCode === '313' ) {
         return 'assets/Booklet.PDF';
       }

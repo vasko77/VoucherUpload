@@ -21,10 +21,10 @@ export class VouchersService {
 
   console.log( dateFrom, dateTo );
   if ( dateFrom ) {
-    dateFrom.setHours( 2 );
+    dateFrom.setHours( 3 );
   }
   if ( dateTo ) {
-    dateTo.setHours( 2 );
+    dateTo.setHours( 3 );
   }
 
   if ( dateFrom && dateTo ) {

@@ -101,7 +101,7 @@
                   [matTooltipDisabled]="!isOriginalDisabled( dataItem )"
                   matTooltipPosition="right" >
               <button class="btn btn-sm btn-success" 
-                      *ngIf="dataItem.agentType === 0"
+                      *ngIf="dataItem.agentType === 0 || dataItem.agentType === 3"
                       (click)="printOriginal(dataItem, confirmationDialog)" 
                       [disabled]="isOriginalDisabled( dataItem )">Πρωτότυπο & Φωτ.Αντίγραφο Συνεργάτη</button>
             </span>
@@ -128,7 +128,7 @@
                   [matTooltipDisabled]="!isDeclineDisabled( dataItem )"
                   matTooltipPosition="right" >
               <button class="btn btn-sm btn-danger" 
-                    *ngIf="dataItem.agentType === 0"
+                    *ngIf="dataItem.agentType === 0 || dataItem.agentType === 3"
                     (click)="declineOriginal(dataItem, confirmationDialog)" 
                     [disabled]="isDeclineDisabled( dataItem )">Εκτύπωση από Eurolife</button>
             </span>
@@ -144,7 +144,8 @@
 
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column field="contractType" title="Είδος" width="80"></kendo-grid-column>
+        <kendo-grid-column field="contractType" title="Είδος" width="120"></kendo-grid-column>
+        <kendo-grid-column field="agentTypeDescr" title="Διαχείριση" width="100"></kendo-grid-column>
         <kendo-grid-column field="id" width="150" title="Οδηγός Ασφάλισης (Όροι Ασφάλισης)" 
                             [headerStyle]="{ 'overflow': 'visible', 'white-space': 'normal' }">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex" >
@@ -153,7 +154,8 @@
             </a>
           </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column field="contractNo" title="Αρ.Συμβολαίου" width="140"></kendo-grid-column>
+        <kendo-grid-column field="contractNo" title="Αρ.Συμβολαίου" width="120"></kendo-grid-column>
+        <kendo-grid-column field="applicationNo" title="Αρ.Αίτησης" width="100"></kendo-grid-column>
         <kendo-grid-column field="renewalNo" title="Αρ.Ανανέωσης" width="120"></kendo-grid-column>
         <kendo-grid-column field="amendmentNo" title="Αρ.Πρόσθετης" width="120"></kendo-grid-column>
         <kendo-grid-column field="fullName" title="Ονοματεπώνυμο" width="300"></kendo-grid-column>
@@ -180,6 +182,13 @@
 
   <div *ngIf="decline">
     <p>Με την επιλογή του, η εκτύπωση του παραστατικού θα πραγματοποιηθεί από την εταιρία και θα σας αποσταλεί</p>
+  </div>
+
+  <div class="form-group-sm">
+    <label class="col-sm-6">Αρ. Αίτησης</label>
+    <div class="col-sm-4">
+      <input [ngModel]=" selectedVoucher.applicationNo" class="form-control" readonly>
+    </div>
   </div>
 
   <div class="form-group-sm">

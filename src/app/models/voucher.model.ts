@@ -6,6 +6,7 @@ export interface IVoucher {
     amendmentNo: number;
     voucherType: string;
     agentType: number;
+    agentTypeDescr: number;
     isPaid: boolean;
     isRemoved: boolean;
     status: VoucherStatus;
