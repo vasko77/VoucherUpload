@@ -101,7 +101,7 @@
                   [matTooltipDisabled]="!isOriginalDisabled( dataItem )"
                   matTooltipPosition="right" >
               <button class="btn btn-sm btn-success" 
-                      *ngIf="dataItem.agentType === 0 || dataItem.agentType === 3"
+                      *ngIf="dataItem.agentType === 0 || dataItem.agentType === 2 || dataItem.agentType === 3"
                       (click)="printOriginal(dataItem, confirmationDialog)" 
                       [disabled]="isOriginalDisabled( dataItem )">Πρωτότυπο & Φωτ.Αντίγραφο Συνεργάτη</button>
             </span>
@@ -128,7 +128,7 @@
                   [matTooltipDisabled]="!isDeclineDisabled( dataItem )"
                   matTooltipPosition="right" >
               <button class="btn btn-sm btn-danger" 
-                    *ngIf="dataItem.agentType === 0 || dataItem.agentType === 3"
+                    *ngIf="dataItem.agentType === 0 || dataItem.agentType === 2 || dataItem.agentType === 3"
                     (click)="declineOriginal(dataItem, confirmationDialog)" 
                     [disabled]="isDeclineDisabled( dataItem )">Εκτύπωση από Eurolife</button>
             </span>
