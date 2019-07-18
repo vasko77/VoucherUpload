@@ -94,7 +94,8 @@
     <div>
       <kendo-grid [data]="vouchers" style="height: 400px" [resizable]="true">
         <kendo-grid-column field="id" width="420" title="Εκτυπώσεις" 
-                           [headerStyle]="{'text-align': 'center'}" [locked]="true">
+                           [headerStyle]="{'text-align': 'center'}"
+                           [locked]="true">
           <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
             
             <span [matTooltip]="getOriginalDenialReason( dataItem )"
@@ -110,7 +111,7 @@
                   [matTooltipDisabled]="!isNotificationDisabled( dataItem )"
                   matTooltipPosition="right" >
               <button class="btn btn-sm btn-primary"  
-                      *ngIf="dataItem.agentType === 1"
+                      *ngIf="dataItem.agentType === 1 && dataItem.proposalNo === 0"
                       (click)="printNotification(dataItem, confirmationDialog)"
                       [disabled]="isNotificationDisabled( dataItem )">Ειδοποιητήριο</button>
             </span>
@@ -119,7 +120,7 @@
                   [matTooltipDisabled]="!isCopyDisabled( dataItem )"
                   matTooltipPosition="right" >
               <button class="btn btn-sm btn-success" 
-                    *ngIf="dataItem.agentType === 1"
+                    *ngIf="dataItem.agentType === 1 && dataItem.proposalNo === 0"
                     (click)="printCopy(dataItem, confirmationDialog)" 
                     [disabled]="isCopyDisabled( dataItem )">Φωτ.Αντίγρ.Συνεργάτη</button>
             </span>
@@ -137,9 +138,17 @@
                   [matTooltipDisabled]="!isOriginalDisabled( dataItem )"
                   matTooltipPosition="right" >
               <button class="btn btn-sm btn-warning" 
-                      *ngIf="dataItem.agentType === 1"
+                      *ngIf="dataItem.agentType === 1 && dataItem.proposalNo === 0"
                       (click)="printOriginal(dataItem, confirmationDialog)" 
                       [disabled]="isOriginalDisabled( dataItem )">Αντίγραφο Πελάτη</button>
+            </span>
+
+            <span>
+                <div style="width: 200px">
+                    <button class="btn btn-sm btn-primary btn-block"
+                            *ngIf="dataItem.proposalNo > 0"
+                            (click)="printProposal(dataItem, confirmationDialog)">Αίτηση Πρωτοσυμβολαίου</button>
+                </div>
             </span>
 
           </ng-template>
@@ -158,6 +167,7 @@
         <kendo-grid-column field="applicationNo" title="Αρ.Αίτησης" width="100"></kendo-grid-column>
         <kendo-grid-column field="renewalNo" title="Αρ.Ανανέωσης" width="120"></kendo-grid-column>
         <kendo-grid-column field="amendmentNo" title="Αρ.Πρόσθετης" width="120"></kendo-grid-column>
+        <kendo-grid-column field="proposalNo" title="Αρ.Αίτησης" width="120"></kendo-grid-column>
         <kendo-grid-column field="fullName" title="Ονοματεπώνυμο" width="300"></kendo-grid-column>
         <kendo-grid-column field="klados" title="Κλάδος" width="100"></kendo-grid-column>
         <kendo-grid-column field="issueDate" title="Ημ.Έκδοσης" width="120" format="{0:dd/MM/yyyy}"></kendo-grid-column>
@@ -209,6 +219,13 @@
     <label class="col-sm-6">Αρ. Πρόσθετης</label>
     <div class="col-sm-4">
       <input [ngModel]=" selectedVoucher.amendmentNo" class="form-control" readonly>
+    </div>
+  </div>
+
+  <div class="form-group-sm">
+    <label class="col-sm-6">Αρ. Αίτησης</label>
+    <div class="col-sm-4">
+      <input [ngModel]=" selectedVoucher.proposalNo" class="form-control" readonly>
     </div>
   </div>
 

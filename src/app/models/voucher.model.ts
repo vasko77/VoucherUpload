@@ -4,6 +4,7 @@ export interface IVoucher {
     contractNo: number;
     renewalNo: number;
     amendmentNo: number;
+    proposalNo: number;
     voucherType: string;
     agentType: number;
     agentTypeDescr: number;
@@ -47,5 +48,6 @@ export enum VoucherStatus {
 export enum VoucherDocumentType {
     Original,
     Copy,
-    Notification
+    Notification,
+    Proposal
 }
